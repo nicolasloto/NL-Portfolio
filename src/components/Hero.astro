@@ -1,0 +1,47 @@
+---
+import Scene3D from './Scene3D';
+---
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <Scene3D client:load />
+  </div>
+  
+  <div class="container mx-auto px-4 z-10">
+    <div class="max-w-4xl mx-auto text-center bg-white/20 backdrop-blur-sm rounded-3xl p-10 shadow-md shadow-black-500/10 border border-white/30 border-opacity-50">
+      <div class="flex flex-col items-center mb-6 animate-fade-in">
+        <div class="w-36 h-36 rounded-full border-4 border-white/50 shadow-2xl mb-4 overflow-hidden bg-gradient-to-br from-orange-100 to-orange-50">
+          <img
+            src="/src/assets/pfp.jpg"
+            alt="Profile"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <h1 class="text-4xl md:text-7xl font-bold mb-4 text-black">Nicolás Loto</h1>
+        <h2 class="text-2xl md:text-4xl text-orange-900 mb-8 font-medium">Frontend Dev | UX/UI Design</h2>
+      </div>
+
+      <div class="flex gap-6 justify-center animate-slide-up" style="animation-delay: 200ms;">
+        <a href="/projects" class="bg-white/20 text-orange-800 px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-white/30 transition-colors backdrop-blur-sm border border-white/30 shadow-lg shadow-black-500/10">
+          View My Work
+        </a>
+        <a href="#contact" class="bg-orange-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-orange-700 transition-colors shadow-lg shadow-black-500/30">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flechas en forma de V -->
+  <div class="absolute bottom-16 md:bottom-16 left-1/2 transform -translate-x-1/2 flex flex-col items-center -space-y-5">
+    <div class="animate-pulse-bounce">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-12 md:w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+    <div class="animate-pulse-bounce animation-delay-500">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-12 md:w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+  </div>
+</section>

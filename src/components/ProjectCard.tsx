@@ -3,9 +3,10 @@ import type { Project } from '../types/project';
 
 interface ProjectCardProps {
   project: Project;
+  eager?: boolean; // Add eager prop
 }
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+export const ProjectCard: React.FC<ProjectCardProps> = ({ project, eager = false }) => {
   return (
     <div className="bg-white/80 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
       {/* Project Image */}
@@ -14,6 +15,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           src={project.image}
           alt={project.title}
           className="w-full h-full object-cover"
+          loading={eager ? 'eager' : 'lazy'} // Use eager or lazy loading
         />
         {project.featured && (
           <span className="absolute top-4 right-4 bg-orange-600 text-white px-3 py-1 rounded-full text-sm">

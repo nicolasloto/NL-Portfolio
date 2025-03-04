@@ -33,7 +33,7 @@ const Scene3D = () => {
     const sphereMaterial = new THREE.MeshPhongMaterial({
       color: 0xea580c,
       transparent: true,
-      opacity: 1,
+      opacity: 100,
     });
 
     const spheres: THREE.Mesh[] = [];
@@ -62,7 +62,7 @@ const Scene3D = () => {
     const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     sceneRef.current.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 3.5);
     directionalLight.position.set(5, 5, 5);
     sceneRef.current.add(directionalLight);
 

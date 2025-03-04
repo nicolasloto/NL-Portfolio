@@ -1,10 +1,13 @@
 ---
+import { Image } from 'astro:assets'; 
+import ceciliaAvatar from '../assets/cecilia-pfp.jpg';
+
 interface Testimonial {
   content: string;
   author: string;
   role: string;
   company: string;
-  avatar: string;
+  avatar: typeof ceciliaAvatar;
 }
 
 const testimonials: Testimonial[] = [
@@ -13,20 +16,25 @@ const testimonials: Testimonial[] = [
     author: "Andrea Cecilia López",
     role: "Backend Dev",
     company: "Quality + ITSE",
-    avatar: "src/assets/cecilia pfp.jpg"
+    avatar: ceciliaAvatar,
   }
 ];
 ---
+
 <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl">
   <h3 class="text-2xl font-semibold text-orange-900 mb-6">What People Say</h3>
   <div class="grid md:grid-cols-2 gap-6">
     {testimonials.map((testimonial) => (
       <div class="bg-gradient-to-br from-orange-50 to-white p-6 rounded-2xl">
         <div class="flex gap-4 items-start">
-          <img 
-            src={testimonial.avatar} 
+          
+          <Image
+            src={testimonial.avatar}
             alt={testimonial.author}
             class="w-12 h-12 rounded-full object-cover"
+            width={48}
+            height={48}
+            loading="lazy"
           />
           <div class="flex-1">
             <p class="text-orange-800/90 mb-4">{testimonial.content}</p>

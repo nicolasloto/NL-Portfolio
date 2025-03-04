@@ -1,20 +1,31 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import { ProjectCard } from '../components/ProjectCard'
-import { projects } from '../data/project'
+import Layout from '../layouts/Layout.astro';
+import { ProjectCard } from '../components/ProjectCard';
+import { projects } from '../data/project';
+import { Image } from 'astro:assets'; // Import Astro's Image component
+
+// Optimize local images
+const optimizedProjects = projects.map((project) => {
+  if (typeof project.image !== 'string') {
+    return {
+      ...project,
+      image: project.image.src, // Use the optimized image URL
+    };
+  }
+  return project;
+});
 
 // Get unique tags from all projects
-const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
+const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort();
 ---
-<Layout title="Projects | Modern Developer Portfolio">
+<Layout title="Projects | Portfolio Nicolás Loto">
   <main class="min-h-screen py-20 px-4">
     <div class="container mx-auto max-w-6xl">
       <!-- Header -->
       <div class="text-center mb-12">
         <a href="/" class="inline-flex items-center text-orange-600 hover:text-orange-800 mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"
-            ></path>
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
           </svg>
           Back to Home
         </a>
@@ -35,7 +46,7 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
                 class="w-full px-4 py-2 rounded-xl bg-white border border-orange-100 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-colors"
               />
             </div>
-            <button id="resetFilters" class="px-4 py-2 text-orange-600 border border-orange-100 rounded-xl hover:bg-orange-50 transition-colors"> Reset Filters </button>
+            <button id="resetFilters" class="px-4 py-2 text-orange-600 border border-orange-100 rounded-xl hover:bg-orange-50 transition-colors">Reset Filters</button>
           </div>
 
           <!-- Tags Filter -->
@@ -58,9 +69,9 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
       <!-- Projects Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectsGrid">
         {
-          projects.map((project) => (
+          optimizedProjects.map((project, index) => (
             <div class="project-wrapper">
-              <ProjectCard client:load project={project} />
+              <ProjectCard client:load project={project} eager={index < 3} /> <!-- Eager load first 3 images -->
             </div>
           ))
         }
@@ -71,21 +82,21 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
 
 <script>
   interface ProjectDataItem {
-    element: Element
-    title: string
-    description: string
-    tags: string[]
+    element: Element;
+    title: string;
+    description: string;
+    tags: string[];
   }
 
-  let projectsData: ProjectDataItem[] = []
+  let projectsData: ProjectDataItem[] = [];
 
   document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('search') as HTMLInputElement
-    const tagCheckboxes = document.querySelectorAll('.tag-checkbox') as NodeListOf<HTMLInputElement>
-    const projectsGrid = document.getElementById('projectsGrid')
-    const resetButton = document.getElementById('resetFilters')
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const tagCheckboxes = document.querySelectorAll('.tag-checkbox') as NodeListOf<HTMLInputElement>;
+    const projectsGrid = document.getElementById('projectsGrid');
+    const resetButton = document.getElementById('resetFilters');
 
-    if (!searchInput || !projectsGrid || !resetButton) return
+    if (!searchInput || !projectsGrid || !resetButton) return;
 
     // Store initial projects data
     projectsData = Array.from(projectsGrid.children).map((child) => ({
@@ -93,53 +104,54 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
       title: child.querySelector('h3')?.textContent?.toLowerCase() || '',
       description: child.querySelector('p')?.textContent?.toLowerCase() || '',
       tags: Array.from(child.querySelectorAll('[data-tag]')).map((tag) => tag.getAttribute('data-tag')?.toLowerCase() || ''),
-    }))
+    }));
 
     // Filter function
     const filterProjects = () => {
-      const searchTerm = searchInput.value.toLowerCase()
+      const searchTerm = searchInput.value.toLowerCase();
       const selectedTags = Array.from(tagCheckboxes)
         .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value.toLowerCase())
+        .map((checkbox) => checkbox.value.toLowerCase());
 
       projectsData.forEach((project) => {
-        const matchesSearch = project.title.includes(searchTerm) || project.description.includes(searchTerm)
+        const matchesSearch = project.title.includes(searchTerm) || project.description.includes(searchTerm);
+        const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => project.tags.includes(tag));
 
-        const matchesTags = selectedTags.length === 0 || selectedTags.every((tag) => project.tags.includes(tag))
-
-        const wrapper = (project.element as Element).closest('.project-wrapper')
+        const wrapper = (project.element as Element).closest('.project-wrapper');
         if (wrapper) {
-          wrapper.classList.toggle('hidden', !(matchesSearch && matchesTags))
+          wrapper.classList.toggle('hidden', !(matchesSearch && matchesTags));
         }
-      })
-    }
+      });
+    };
 
     // Reset function
     const resetFilters = () => {
-      searchInput.value = ''
+      searchInput.value = '';
       tagCheckboxes.forEach((checkbox) => {
-        checkbox.checked = false
-        const label = checkbox.nextElementSibling
+        checkbox.checked = false;
+        const label = checkbox.nextElementSibling as HTMLElement;
         if (label) {
-          label.classList.remove('bg-orange-500', 'text-white')
-          label.classList.remove('border-orange-500')
+          label.classList.remove('bg-orange-500', 'text-white', 'border-orange-500');
         }
-      })
-      filterProjects()
-    }
+      });
+      filterProjects();
+    };
 
     // Add event listeners
-    searchInput.addEventListener('input', filterProjects)
-    resetButton.addEventListener('click', resetFilters)
+    searchInput.addEventListener('input', filterProjects);
+    resetButton.addEventListener('click', resetFilters);
     tagCheckboxes.forEach((checkbox) => {
       checkbox.addEventListener('change', (e) => {
-        const label = (e.target as HTMLInputElement).nextElementSibling
-        label?.classList.toggle('bg-orange-500', (e.target as HTMLInputElement).checked)
-        label?.classList.toggle('text-white', (e.target as HTMLInputElement).checked)
-        filterProjects()
-      })
-    })
-  })
+        const label = (e.target as HTMLInputElement).nextElementSibling as HTMLElement;
+        if (label) {
+          label.classList.toggle('bg-orange-500', (e.target as HTMLInputElement).checked);
+          label.classList.toggle('text-white', (e.target as HTMLInputElement).checked);
+          label.classList.toggle('border-orange-500', (e.target as HTMLInputElement).checked);
+        }
+        filterProjects();
+      });
+    });
+  });
 </script>
 
 <style>
@@ -147,8 +159,11 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
     @apply bg-orange-500 text-white border-orange-500;
   }
 
-  /* Ensure project wrappers maintain grid layout */
-  .project-wrapper:not(.hidden) {
+  .project-wrapper {
     display: block;
+  }
+
+  .project-wrapper.hidden {
+    display: none;
   }
 </style>

@@ -1,39 +1,51 @@
 ---
 interface Skill {
   name: string;
-  level: 'Expert' | 'Advanced' | 'Intermediate';
+  level: "Expert" | "Advanced" | "Intermediate" | "Basic";
   icon: string;
 }
 
 const skills: Skill[] = [
-  { name: 'Figma', level: 'Expert', icon: '🖼️' },
-  { name: 'Discord/Slack', level: 'Expert', icon: '📞' },
-  { name: 'React', level: 'Advanced', icon: '⚛️' },
-  { name: 'JavaScript', level: 'Advanced', icon: '⚡' },
-  { name: 'Node.js', level: 'Advanced', icon: '🟢' },
-  
+  { name: "Figma", level: "Expert", icon: "🖼️" },
+  { name: "Git/GitHub", level: "Expert", icon: "🐙" },
+  { name: "Tailwind CSS", level: "Advanced", icon: "🎨" },
+  { name: "React", level: "Advanced", icon: "⚛️" },
+  { name: "JavaScript", level: "Advanced", icon: "⚡" },
+  { name: "Jira/Trello", level: "Intermediate", icon: "📋" },
+  { name: "Node.js", level: "Intermediate", icon: "🟢" },
+  { name: "Docker", level: "Basic", icon: "🐳" },
+  { name: "Databases", level: "Basic", icon: "🧮" },
 ];
 
 const levelColors = {
-  Expert: 'bg-blue-100 text-blue-700',
-  Advanced: 'bg-green-100 text-green-700',
-  Intermediate: 'bg-yellow-100 text-yellow-700'
+  Expert: "bg-indigo-100 text-indigo-800",
+  Advanced: "bg-teal-100 text-teal-800",
+  Intermediate: "bg-orange-100 text-orange-800",
+  Basic: "bg-yellow-100 text-yellow-800",
 };
 ---
 
-<div class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl">
-  <h3 class="text-2xl font-semibold mb-4">Skills</h3>
+<div
+  class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/30"
+>
+  <h3 class="text-2xl font-semibold mb-4 text-gray-800">Skills</h3>
   <div class="space-y-4">
-    {skills.map((skill) => (
-      <div class="flex items-center justify-between p-3 hover:bg-apple-gray-50 rounded-xl transition-colors">
-        <div class="flex items-center gap-3">
-          <span class="text-xl">{skill.icon}</span>
-          <span class="font-medium text-apple-gray-500">{skill.name}</span>
+    {
+      skills.map((skill) => (
+        <div class="flex items-center justify-between p-3 hover:bg-gray-100 rounded-xl transition-colors duration-200">
+          <div class="flex items-center gap-3">
+            <span class="text-xl" aria-hidden="true">
+              {skill.icon}
+            </span>
+            <span class="font-medium text-gray-700">{skill.name}</span>
+          </div>
+          <span
+            class={`px-3 py-1 rounded-full text-sm font-medium shadow-sm ${levelColors[skill.level]}`}
+          >
+            {skill.level}
+          </span>
         </div>
-        <span class={`px-3 py-1 rounded-full text-sm font-medium ${levelColors[skill.level]}`}>
-          {skill.level}
-        </span>
-      </div>
-    ))}
+      ))
+    }
   </div>
 </div>

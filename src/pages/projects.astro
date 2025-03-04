@@ -21,7 +21,6 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
 <Layout title="Projects | Portfolio Nicolás Loto">
   <main class="min-h-screen py-20 px-4">
     <div class="container mx-auto max-w-6xl">
-      <!-- Header -->
       <div class="text-center mb-12">
         <a href="/" class="inline-flex items-center text-orange-600 hover:text-orange-800 mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
@@ -33,10 +32,8 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
         <p class="text-orange-600 max-w-2xl mx-auto">Explore my latest projects and experiments. Each project represents a unique challenge and solution.</p>
       </div>
 
-      <!-- Search and Filter Section -->
       <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl mb-8">
         <div class="flex flex-col gap-4">
-          <!-- Search and Reset Row -->
           <div class="flex gap-4">
             <div class="flex-1">
               <input
@@ -49,7 +46,6 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
             <button id="resetFilters" class="px-4 py-2 text-orange-600 border border-orange-100 rounded-xl hover:bg-orange-50 transition-colors">Reset Filters</button>
           </div>
 
-          <!-- Tags Filter -->
           <div class="flex-1">
             <p class="text-sm text-orange-600 mb-2">Filter by tags:</p>
             <div class="flex flex-wrap gap-2">
@@ -66,12 +62,11 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
         </div>
       </div>
 
-      <!-- Projects Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectsGrid">
         {
           optimizedProjects.map((project, index) => (
             <div class="project-wrapper">
-              <ProjectCard client:load project={project} eager={index < 3} /> <!-- Eager load first 3 images -->
+              <ProjectCard client:load project={project} eager={index < 3} />
             </div>
           ))
         }

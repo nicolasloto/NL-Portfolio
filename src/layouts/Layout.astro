@@ -1,15 +1,15 @@
 ---
-import '@fontsource-variable/inter';
-import '@fontsource/source-sans-pro';
+import "@fontsource-variable/inter";
+import "@fontsource/source-sans-pro";
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { 
-  title, 
-  description = "Nicolás' Portfolio | Web developer & UI/UX designer"
+const {
+  title,
+  description = "Nicolás' Portfolio | Web developer & UI/UX designer",
 } = Astro.props;
 ---
 
@@ -19,7 +19,11 @@ const {
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="https://ps.w.org/advance-portfolio-grid/assets/icon-256x256.png" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="https://ps.w.org/advance-portfolio-grid/assets/icon-256x256.png"
+    />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
@@ -33,9 +37,9 @@ const {
     --accent: rgb(0, 122, 255);
     --accent-dark: rgb(0, 64, 221);
   }
-  
+
   html {
-    font-family: 'SF Pro Display', 'Inter Variable', system-ui, sans-serif;
+    font-family: "SF Pro Display", "Inter Variable", system-ui, sans-serif;
     scroll-behavior: smooth;
   }
 

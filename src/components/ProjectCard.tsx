@@ -3,7 +3,7 @@ import type { Project } from "../types/project";
 
 interface ProjectCardProps {
   project: Project;
-  eager?: boolean; // Propiedad para carga eager o lazy de la imagen
+  eager?: boolean;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({

@@ -172,12 +172,10 @@
   document
     .getElementById("contact-form")
     .addEventListener("submit", function (e) {
-      e.preventDefault(); // Evita el envío tradicional del formulario
+      e.preventDefault();
 
-      // Recopila los datos del formulario
       const formData = new FormData(this);
 
-      // Envía los datos a Getform usando Fetch API
       fetch("https://getform.io/f/bllyqejb", {
         method: "POST",
         body: formData,

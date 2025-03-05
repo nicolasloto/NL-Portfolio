@@ -93,7 +93,6 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
 
     if (!searchInput || !projectsGrid || !resetButton) return;
 
-    // Store initial projects data
     projectsData = Array.from(projectsGrid.children).map((child) => ({
       element: child,
       title: child.querySelector('h3')?.textContent?.toLowerCase() || '',
@@ -101,7 +100,6 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
       tags: Array.from(child.querySelectorAll('[data-tag]')).map((tag) => tag.getAttribute('data-tag')?.toLowerCase() || ''),
     }));
 
-    // Filter function
     const filterProjects = () => {
       const searchTerm = searchInput.value.toLowerCase();
       const selectedTags = Array.from(tagCheckboxes)
@@ -119,7 +117,6 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
       });
     };
 
-    // Reset function
     const resetFilters = () => {
       searchInput.value = '';
       tagCheckboxes.forEach((checkbox) => {
@@ -132,7 +129,6 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
       filterProjects();
     };
 
-    // Add event listeners
     searchInput.addEventListener('input', filterProjects);
     resetButton.addEventListener('click', resetFilters);
     tagCheckboxes.forEach((checkbox) => {

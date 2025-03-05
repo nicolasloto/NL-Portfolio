@@ -15,15 +15,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       className="bg-white/80 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
       aria-labelledby={`project-${project.id}-title`}
     >
-      {/* Project Image */}
       <div className="relative h-48 overflow-hidden">
         <img
           src={project.image}
           alt={project.title}
           className="w-full h-full object-cover"
-          loading={eager ? "eager" : "lazy"} // Carga eager o lazy
-          width={400} // Ancho fijo para optimización
-          height={192} // Alto fijo para optimización
+          loading={eager ? "eager" : "lazy"}
+          width={400} 
+          height={192}
         />
         {project.featured && (
           <span
@@ -35,7 +34,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         )}
       </div>
 
-      {/* Project Content */}
       <div className="p-6">
         <h3
           id={`project-${project.id}-title`}
@@ -45,7 +43,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         </h3>
         <p className="text-orange-600 mb-4">{project.description}</p>
 
-        {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
           {project.tags.map((tag) => (
             <span
@@ -59,7 +56,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           ))}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-3">
           {project.demoUrl && (
             <a

@@ -9,10 +9,11 @@ const socialLinks = [
 ];
 
 const now = new Date();
-const timeString = now.toLocaleTimeString("en-US", {
+const timeString = now.toLocaleTimeString("es-AR", {
   hour: "2-digit",
   minute: "2-digit",
   hour12: false,
+  timeZone: "America/Argentina/Buenos_Aires",
 });
 ---
 
@@ -64,7 +65,7 @@ const timeString = now.toLocaleTimeString("en-US", {
       </div>
       <div>
         <p class="text-sm text-gray-500">Local Time</p>
-        <p class="font-medium text-gray-800">{timeString}</p>
+        <p class="font-medium text-gray-800">{timeString} (GMT-3)</p>
       </div>
     </div>
   </div>

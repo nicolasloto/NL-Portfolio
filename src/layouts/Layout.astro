@@ -49,4 +49,66 @@ const {
     min-height: 100vh;
     overscroll-behavior: none;
   }
-</style>
+
+@keyframes fade-up-visible {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- FIX FORM OVERFLOW Y BOTÓN INVISIBLE --- */
+#contact {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* evita que se salga en mobile */
+  box-sizing: border-box;
+}
+
+/* asegura que el grid no rompa el ancho */
+#contact .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  #contact .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* evita desbordes en los inputs y textareas */
+#contact input,
+#contact textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+#contact a,
+#contact span {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+
+
+
+/* mantiene el botón visible con animación */
+#contact-form button[type="submit"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 10;
+  transform: none !important;
+  animation: fade-up-visible 0.6s ease-out 0.2s both;
+  will-change: opacity;
+}

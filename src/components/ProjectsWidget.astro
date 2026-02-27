@@ -3,7 +3,7 @@ import { projects } from "../data/project";
 import type { Project } from "../types/project";
 import { Image } from "astro:assets";
 
-const featuredProjects: Project[] = projects;
+const featuredProjects: Project[] = projects.slice(0, 3);
 ---
 
 <div
@@ -20,16 +20,12 @@ const featuredProjects: Project[] = projects;
   </div>
   <div class="grid gap-6">
     {
-      featuredProjects.map((project) => (
-        <article
-          key={project.id}
-          class="group hover-accent-card block bg-white/20 p-4 sm:p-6 rounded-2xl hover:shadow-lg transition-all duration-300 border border-white/20"
-        >
-          <a
-            href={project.demoUrl}
-            class="flex flex-col sm:flex-row gap-4 sm:gap-6"
-            aria-label={`View ${project.title} project`}
-          >
+      featuredProjects.map((project) => {
+        const projectLink = project.demoUrl || project.githubUrl;
+        const isClickable = Boolean(projectLink);
+
+        const cardContent = (
+          <>
             <Image
               src={project.image}
               alt={project.title}
@@ -63,9 +59,28 @@ const featuredProjects: Project[] = projects;
                 })}
               </div>
             </div>
-          </a>
-        </article>
-      ))
+          </>
+        );
+
+        return (
+          <article
+            key={project.id}
+            class={`group hover-accent-card block bg-white/20 p-4 sm:p-6 rounded-2xl border border-white/20 transition-all duration-300 ${isClickable ? "hover:shadow-lg" : ""}`}
+          >
+            {isClickable ? (
+              <a
+                href={projectLink}
+                class="flex flex-col sm:flex-row gap-4 sm:gap-6"
+                aria-label={`View ${project.title} project`}
+              >
+                {cardContent}
+              </a>
+            ) : (
+              <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">{cardContent}</div>
+            )}
+          </article>
+        );
+      })
     }
   </div>
 </div>

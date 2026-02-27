@@ -2,10 +2,6 @@
 
 Personal portfolio built with Astro, React, and Tailwind, featuring a dark minimal aesthetic with color accents on hover.
 
-## GitHub Description
-
-`Personal portfolio by Nicolas Loto: default dark mode, pixel/minimal aesthetic, subtle motion, and a custom contact endpoint (/api/contact).`
-
 ## Stack
 
 - Astro
@@ -44,18 +40,24 @@ npm run preview
 
 ## Contact Form (`/api/contact`)
 
-The form sends emails to `lotohectornicolas@gmail.com` using Resend through a Vercel Function at `api/contact.ts`.
+The form sends emails with Gmail OAuth2 using a Vercel Function at `api/contact.ts`.
 
 ### Environment Variables
 
 Create a `.env` file:
 
 ```env
-RESEND_API_KEY=your_api_key
-CONTACT_FROM=Portfolio <onboarding@resend.dev>
+SMTP_USER=your@gmail.com
+GMAIL_CLIENT_ID=your_google_client_id
+GMAIL_CLIENT_SECRET=your_google_client_secret
+GMAIL_REFRESH_TOKEN=your_google_refresh_token
+CONTACT_FROM=Portfolio <your@gmail.com>
+CONTACT_TO=lotohectornicolas@gmail.com
 ```
 
-For production, replace `onboarding@resend.dev` with a sender from your verified Resend domain.
+Notes:
+- `CONTACT_TO` is optional and defaults to `lotohectornicolas@gmail.com`.
+- You must set your OAuth app in Google Cloud to Testing and add your Gmail as a test user.
 
 ### Test Contact Locally
 
@@ -74,5 +76,5 @@ Then open the URL shown by Vercel (usually `http://localhost:3000`) and submit t
 Recommended: Vercel.
 
 1. Import the repository into Vercel.
-2. Configure `RESEND_API_KEY` and `CONTACT_FROM`.
+2. Configure Gmail OAuth2 environment variables.
 3. Deploy.

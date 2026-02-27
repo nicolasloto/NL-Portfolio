@@ -31,5 +31,7 @@
     "react-dom": "^18.2.0",
     "@fontsource-variable/inter": "^5.0.16",
     "@fontsource/source-sans-pro": "^5.1.0"
+    ,
+    "nodemailer": "^6.9.16"
   }
 }

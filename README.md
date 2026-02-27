@@ -1,121 +1,78 @@
-# Apple-Style Portfolio Template
+# NL-Portfolio
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+Personal portfolio built with Astro, React, and Tailwind, featuring a dark minimal aesthetic with color accents on hover.
 
-A modern, minimalist portfolio template built with Astro and designed with Apple's design aesthetic in mind.
+## GitHub Description
 
-live demo: [apple-style-portfolio](https://apple-style-portfolio.larryxue.dev/)
+`Personal portfolio by Nicolas Loto: default dark mode, pixel/minimal aesthetic, subtle motion, and a custom contact endpoint (/api/contact).`
 
-If you find this project helpful, please consider giving it a star ⭐️.
+## Stack
 
-## Features
+- Astro
+- React
+- Tailwind CSS
+- Three.js
+- GSAP
 
-- 🍎 Apple-style design aesthetic
-- ⚡️ Built with Astro for optimal performance
-- 🎨 Tailwind CSS for styling
-- 🌟 GSAP animations
-- 📱 Fully responsive design
-- 🎬 Three.js integration for 3D elements
-- ⚛️ React components integration
+## Requirements
 
-## Table of Contents
+- Node.js 20+
+- npm
 
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Development](#development)
-  - [Building for Production](#building-for-production)
-- [Deployment](#deployment)
-  - [Deploy with Vercel](#deploy-with-vercel)
-  - [Deploy with Cloudflare Pages](#deploy-with-cloudflare-pages)
-- [Tech Stack](#tech-stack)
-- [License](#license)
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v20 or higher)
-
-### Installation
-
-1. Clone the repository:
+## Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/larry-xue/apple-style-portfolio
-cd apple-style-portfolio
-
-# Or use astro create
-npm create astro@latest -- --template larry-xue/apple-style-portfolio
-```
-
-2. Install dependencies:
-
-```bash
+git clone https://github.com/nicolasloto/NL-Portfolio.git
+cd NL-Portfolio
 npm install
 ```
 
-### Development
-
-To start the development server:
+## Development
 
 ```bash
 npm run dev
 ```
 
-The site will be available at `http://localhost:4321`
+Local app runs at `http://localhost:4321`.
 
-### Building for Production
-
-To create a production build:
+## Build
 
 ```bash
 npm run build
-```
-
-To preview the production build:
-
-```bash
 npm run preview
 ```
 
-## Deployment
+## Contact Form (`/api/contact`)
 
-### Deploy with Vercel
+The form sends emails to `lotohectornicolas@gmail.com` using Resend through a Vercel Function at `api/contact.ts`.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/larry-xue/apple-style-portfolio)
+### Environment Variables
 
-1. Fork this repository
-2. Connect to Vercel using your GitHub account
-3. Select the forked repository
-4. Vercel will automatically detect Astro and configure the build settings
-5. Click "Deploy"
+Create a `.env` file:
 
-### Deploy with Cloudflare Pages
+```env
+RESEND_API_KEY=your_api_key
+CONTACT_FROM=Portfolio <onboarding@resend.dev>
+```
 
-[![Deploy to Cloudflare Pages](https://img.shields.io/badge/Deploy%20to-Cloudflare%20Pages-orange.svg?logo=cloudflare)](https://dash.cloudflare.com/sign-up)
+For production, replace `onboarding@resend.dev` with a sender from your verified Resend domain.
 
-1. Fork this repository
-2. Log in to the Cloudflare dashboard
-3. Select "Pages" from the sidebar
-4. Create a new project and connect your GitHub repository
-5. Configure the build settings:
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Node.js version: 20.x
-6. Click "Save and Deploy"
+### Test Contact Locally
 
-## Tech Stack
+Since `/api/contact` is a Vercel Function, it is not available with `astro dev`.
 
-- [Astro](https://astro.build)
-- [React](https://reactjs.org)
-- [Tailwind CSS](https://tailwindcss.com)
-- [GSAP](https://greensock.com/gsap)
-- [Three.js](https://threejs.org)
-- [Inter Font](https://rsms.me/inter)
-- [Source Sans Pro](https://fonts.google.com/specimen/Source+Sans+Pro)
+Use:
 
-## License
+```bash
+vercel dev
+```
 
-MIT License
+Then open the URL shown by Vercel (usually `http://localhost:3000`) and submit the form.
+
+## Deploy
+
+Recommended: Vercel.
+
+1. Import the repository into Vercel.
+2. Configure `RESEND_API_KEY` and `CONTACT_FROM`.
+3. Deploy.

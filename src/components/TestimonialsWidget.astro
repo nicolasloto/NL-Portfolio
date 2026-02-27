@@ -15,19 +15,19 @@ const testimonials: Testimonial[] = [
     content: "I had the pleasure of working with Nicolás on the Quality Wines project, where he served as Product Manager. His ability to align the team with objectives was key to our success. Nicolás motivated us, provided constant support, and his creativity and attention to detail elevated every deliverable. His passion for design and leadership left a lasting positive impact on the team.",
     author: "Andrea Cecilia López",
     role: "Backend Dev",
-    company: "Quality + ITSE",
+    company: "Quality Wines Store",
     avatar: ceciliaAvatar,
   },
 ];
 ---
 
-<div class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/30">
+<div class="surface-panel js-foil backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/30">
   <h3 class="text-2xl font-semibold text-white mb-6">What People Say</h3>
   <div class="grid md:grid-cols-2 gap-6">
     {
       testimonials.map((testimonial) => (
         <article
-          class="group hover-accent-card bg-white/20 p-6 rounded-2xl hover:shadow-lg transition-all duration-300 border border-white/20"
+          class="group hover-accent-card surface-card js-foil p-6 rounded-2xl hover:shadow-lg transition-all duration-300 border border-white/20"
           aria-labelledby={`testimonial-${testimonial.author.toLowerCase().replace(/\s+/g, '-')}`}
         >
           <div class="absolute top-3 right-3 text-white/40 text-lg transition-colors duration-300 group-hover:text-fuchsia-300">"</div>

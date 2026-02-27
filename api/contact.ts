@@ -4,6 +4,16 @@ type Payload = {
   message: string;
 };
 
+type AnyBody = Record<string, string>;
+
+function makeRequestId(): string {
+  try {
+    return `${Date.now().toString(36)}-${crypto.randomUUID().slice(0, 8)}`;
+  } catch {
+    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  }
+}
+
 function escapeHtml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
@@ -13,11 +23,25 @@ function escapeHtml(value: string): string {
     .replaceAll("'", "&#39;");
 }
 
+function toBodyMap(body: any): AnyBody {
+  if (!body) return {};
+  if (typeof body === "string") {
+    return Object.fromEntries(new URLSearchParams(body).entries());
+  }
+  if (typeof body === "object") {
+    return Object.fromEntries(
+      Object.entries(body).map(([key, value]) => [key, String(value ?? "")])
+    );
+  }
+  return {};
+}
+
 function parseBody(body: any): Payload | "bot" | null {
-  const name = String(body?.name || "").trim();
-  const email = String(body?.email || "").trim();
-  const message = String(body?.message || "").trim();
-  const botField = String(body?.company || "").trim();
+  const parsed = toBodyMap(body);
+  const name = String(parsed.name || "").trim();
+  const email = String(parsed.email || "").trim();
+  const message = String(parsed.message || "").trim();
+  const botField = String(parsed.company || "").trim();
 
   // Honeypot: silently accept and redirect.
   if (botField) return "bot";
@@ -105,30 +129,63 @@ function redirect(res: any, path: string, status = 303): void {
   res.end();
 }
 
+function wantsJson(req: any): boolean {
+  const accept = String(req?.headers?.accept || "");
+  const requestedWith = String(req?.headers?.["x-requested-with"] || "");
+  return accept.includes("application/json") || requestedWith === "XMLHttpRequest";
+}
+
+function sendJson(res: any, statusCode: number, payload: Record<string, any>): void {
+  res.statusCode = statusCode;
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.end(JSON.stringify(payload));
+}
+
 export default async function handler(req: any, res: any): Promise<void> {
+  const requestId = makeRequestId();
+  const jsonMode = wantsJson(req);
+  const sourceIp = String(
+    req?.headers?.["x-forwarded-for"] || req?.socket?.remoteAddress || "unknown"
+  );
+
   if (req.method !== "POST") {
-    res.statusCode = 405;
-    res.end("Method Not Allowed");
+    console.warn(`[contact:${requestId}] Invalid method`, { method: req.method, sourceIp });
+    if (jsonMode) {
+      sendJson(res, 405, { ok: false, message: "Method Not Allowed", requestId });
+    } else {
+      res.statusCode = 405;
+      res.end("Method Not Allowed");
+    }
     return;
   }
 
   const payload = parseBody(req.body);
 
   if (payload === null) {
-    redirect(res, "/?contact=invalid#contact");
+    console.info(`[contact:${requestId}] Invalid payload`, { sourceIp });
+    if (jsonMode) sendJson(res, 400, { ok: false, status: "invalid", requestId });
+    else redirect(res, "/?contact=invalid#contact");
     return;
   }
 
   if (payload === "bot") {
-    redirect(res, "/thank-you");
+    console.info(`[contact:${requestId}] Honeypot triggered`, { sourceIp });
+    if (jsonMode) sendJson(res, 200, { ok: true, status: "bot", requestId });
+    else redirect(res, "/thank-you");
     return;
   }
 
   try {
     await sendWithSmtp(payload);
-    redirect(res, "/thank-you");
+    console.info(`[contact:${requestId}] Message sent`, {
+      sourceIp,
+      emailDomain: payload.email.split("@")[1] || "unknown",
+    });
+    if (jsonMode) sendJson(res, 200, { ok: true, status: "sent", requestId });
+    else redirect(res, "/thank-you");
   } catch (error) {
-    console.error("[contact] SMTP send failed:", error);
-    redirect(res, "/?contact=error#contact");
+    console.error(`[contact:${requestId}] SMTP send failed`, { sourceIp, error });
+    if (jsonMode) sendJson(res, 500, { ok: false, status: "error", requestId });
+    else redirect(res, "/?contact=error#contact");
   }
 }

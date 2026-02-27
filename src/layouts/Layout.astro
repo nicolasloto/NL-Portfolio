@@ -20,7 +20,7 @@ const {
     <link
       rel="icon"
       type="image/svg+xml"
-      href="https://ps.w.org/advance-portfolio-grid/assets/icon-256x256.png"
+      href="/favicon.svg"
     />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -31,9 +31,7 @@ const {
       (() => {
         if (!window.matchMedia("(pointer: fine)").matches) return;
 
-        const cards = Array.from(
-          document.querySelectorAll(".bg-white\\/80, .bg-white\\/20, .hover-accent-card")
-        );
+        const cards = Array.from(document.querySelectorAll(".js-foil"));
 
         cards.forEach((card) => {
           if (!(card instanceof HTMLElement)) return;
@@ -176,6 +174,8 @@ const {
     font-family: "Geist", system-ui, sans-serif;
   }
 
+  .surface-panel,
+  .surface-card,
   .bg-white\/80,
   .bg-white\/50,
   .bg-white\/20,
@@ -190,6 +190,8 @@ const {
   }
 
 
+  .surface-panel:hover,
+  .surface-card:hover,
   .bg-white\/80:hover,
   .bg-white\/50:hover,
   .bg-white\/20:hover,
@@ -208,6 +210,31 @@ const {
   .hover-accent-card:hover {
     border-color: rgba(255, 255, 255, 0.38) !important;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  }
+
+  .field-control {
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .field-control:focus {
+    border-color: rgba(165, 243, 252, 0.9);
+    box-shadow: 0 0 0 2px rgba(165, 243, 252, 0.28);
+  }
+
+  .info-icon-chip {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
   }
 
   .foil-card {

@@ -1,17 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { ProjectCard } from "../components/ProjectCard";
+import ProjectCard from "../components/ProjectCard.astro";
 import { projects } from "../data/project";
-
-const optimizedProjects = projects.map((project) => {
-  if (typeof project.image !== "string") {
-    return {
-      ...project,
-      image: project.image.src,
-    };
-  }
-  return project;
-});
 
 const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort();
 ---
@@ -44,7 +34,7 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
         </p>
       </div>
 
-      <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl mb-8 border border-white/30">
+      <div class="surface-panel p-6 mb-8 border border-white/30">
         <div class="flex flex-col gap-4">
           <div class="flex gap-4">
             <div class="flex-1">
@@ -52,7 +42,7 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
                 type="text"
                 id="search"
                 placeholder="Search projects..."
-                class="w-full px-4 py-2 rounded-xl bg-white/5 border border-white/20 text-white placeholder:text-white/45 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20 transition-colors"
+                class="field-control w-full px-4 py-2 placeholder:text-white/45"
               />
             </div>
             <button
@@ -90,9 +80,9 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
         id="projectsGrid"
       >
         {
-          optimizedProjects.map((project, index) => (
+          projects.map((project, index) => (
             <div class="project-wrapper">
-              <ProjectCard client:load project={project} eager={index < 3} />
+              <ProjectCard project={project} eager={index < 3} />
             </div>
           ))
         }
@@ -101,82 +91,9 @@ const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort()
   </main>
 </Layout>
 
-<script>
-  interface ProjectDataItem {
-    element: Element;
-    title: string;
-    description: string;
-    tags: string[];
-  }
-
-  let projectsData: ProjectDataItem[] = [];
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const searchInput = document.getElementById("search") as HTMLInputElement;
-    const tagCheckboxes = document.querySelectorAll(
-      ".tag-checkbox"
-    ) as NodeListOf<HTMLInputElement>;
-    const projectsGrid = document.getElementById("projectsGrid");
-    const resetButton = document.getElementById("resetFilters");
-
-    if (!searchInput || !projectsGrid || !resetButton) return;
-
-    projectsData = Array.from(projectsGrid.children).map((child) => ({
-      element: child,
-      title: child.querySelector("h3")?.textContent?.toLowerCase() || "",
-      description: child.querySelector("p")?.textContent?.toLowerCase() || "",
-      tags: Array.from(child.querySelectorAll("[data-tag]")).map(
-        (tag) => tag.getAttribute("data-tag")?.toLowerCase() || ""
-      ),
-    }));
-
-    const filterProjects = () => {
-      const searchTerm = searchInput.value.toLowerCase();
-      const selectedTags = Array.from(tagCheckboxes)
-        .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value.toLowerCase());
-
-      projectsData.forEach((project) => {
-        const matchesSearch =
-          project.title.includes(searchTerm) ||
-          project.description.includes(searchTerm);
-        const matchesTags =
-          selectedTags.length === 0 ||
-          selectedTags.every((tag) => project.tags.includes(tag));
-
-        const wrapper = (project.element as Element).closest(
-          ".project-wrapper"
-        );
-        if (wrapper) {
-          wrapper.classList.toggle("hidden", !(matchesSearch && matchesTags));
-        }
-      });
-    };
-
-    const updateTagLabel = (checkbox: HTMLInputElement) => {
-      const label = checkbox.nextElementSibling as HTMLElement | null;
-      if (!label) return;
-      label.classList.toggle("tag-label-active", checkbox.checked);
-    };
-
-    const resetFilters = () => {
-      searchInput.value = "";
-      tagCheckboxes.forEach((checkbox) => {
-        checkbox.checked = false;
-        updateTagLabel(checkbox);
-      });
-      filterProjects();
-    };
-
-    searchInput.addEventListener("input", filterProjects);
-    resetButton.addEventListener("click", resetFilters);
-    tagCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", () => {
-        updateTagLabel(checkbox);
-        filterProjects();
-      });
-    });
-  });
+<script type="module">
+  import { initProjectsFilters } from "../scripts/projectsFilters";
+  initProjectsFilters();
 </script>
 
 <style>

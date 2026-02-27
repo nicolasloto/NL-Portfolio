@@ -1,0 +1,216 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import type { Project } from "../types/project";
+
+interface Props {
+  project: Project;
+  eager?: boolean;
+  variant?: "grid" | "list";
+}
+
+const { project, eager = false, variant = "grid" } = Astro.props as Props;
+const hasLinks = Boolean(project.demoUrl || project.githubUrl);
+const isList = variant === "list";
+---
+
+<article
+  class={`group hover-accent-card surface-card js-foil border border-white/20 ${
+    isList
+      ? "p-4 sm:p-6 rounded-2xl transition-all duration-300"
+      : "rounded-2xl overflow-hidden transition-all duration-300"
+  }`}
+  aria-labelledby={`project-${project.id}-title`}
+>
+  {
+    isList ? (
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+        <div class="w-full sm:w-24 shrink-0">
+          {typeof project.image === "string" ? (
+            <Image
+              src={project.image}
+              alt={project.title}
+              inferSize
+              class="w-full sm:w-24 h-48 sm:h-24 rounded-xl object-cover"
+              loading={eager ? "eager" : "lazy"}
+            />
+          ) : (
+            <Image
+              src={project.image as ImageMetadata}
+              alt={project.title}
+              width={400}
+              height={400}
+              class="w-full sm:w-24 h-48 sm:h-24 rounded-xl object-cover"
+              loading={eager ? "eager" : "lazy"}
+            />
+          )}
+        </div>
+        <div class="flex-1">
+          <h4
+            id={`project-${project.id}-title`}
+            class="text-xl font-medium text-white mb-2 transition-colors duration-300 group-hover:text-cyan-200"
+          >
+            {project.title}
+          </h4>
+          <p class="text-white/65 mb-3 transition-colors duration-300 group-hover:text-white/90">
+            {project.description}
+          </p>
+          <div class="flex flex-wrap gap-2 mb-3">
+            {
+              project.tags.map((tech, techIndex) => {
+                const hoverColor =
+                  techIndex % 3 === 0
+                    ? "group-hover:text-cyan-200 group-hover:border-cyan-300/70"
+                    : techIndex % 3 === 1
+                      ? "group-hover:text-fuchsia-200 group-hover:border-fuchsia-300/70"
+                      : "group-hover:text-amber-200 group-hover:border-amber-300/70";
+
+                return (
+                  <span
+                    class={`px-3 py-1 bg-white/10 text-white/85 border border-white/30 rounded-full text-sm transition-colors duration-300 ${hoverColor}`}
+                    aria-label={`Technology: ${tech}`}
+                  >
+                    {tech}
+                  </span>
+                );
+              })
+            }
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {
+              project.demoUrl && (
+                <a
+                  href={project.demoUrl}
+                  class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-cyan-300/70 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`View live demo of ${project.title}`}
+                >
+                  Live Demo
+                </a>
+              )
+            }
+            {
+              project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-fuchsia-300/70 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`View source code of ${project.title}`}
+                >
+                  View Code
+                </a>
+              )
+            }
+            {!hasLinks && (
+              <span class="px-3 py-1 border border-white/20 text-white/55 rounded-lg text-xs uppercase tracking-[0.14em]">
+                Under NDA
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <>
+        <div class="relative h-48 overflow-hidden">
+          {typeof project.image === "string" ? (
+            <Image
+              src={project.image}
+              alt={project.title}
+              inferSize
+              class="w-full h-full object-cover"
+              loading={eager ? "eager" : "lazy"}
+            />
+          ) : (
+            <Image
+              src={project.image as ImageMetadata}
+              alt={project.title}
+              width={400}
+              height={192}
+              class="w-full h-full object-cover"
+              loading={eager ? "eager" : "lazy"}
+            />
+          )}
+          {
+            project.featured && (
+              <span
+                class="absolute top-4 right-4 bg-cyan-700 text-white px-3 py-1 rounded-full text-sm"
+                aria-label="Featured project"
+              >
+                Featured
+              </span>
+            )
+          }
+        </div>
+
+        <div class="p-6">
+          <h3
+            id={`project-${project.id}-title`}
+            class="text-xl font-semibold text-white mb-2"
+          >
+            {project.title}
+          </h3>
+          <p class="text-white/70 mb-4">{project.description}</p>
+
+          <div class="flex flex-wrap gap-2 mb-4">
+            {
+              project.tags.map((tag, index) => {
+                const palette = [
+                  "bg-cyan-500/15 text-cyan-100 border-cyan-300/50",
+                  "bg-fuchsia-500/15 text-fuchsia-100 border-fuchsia-300/50",
+                  "bg-amber-500/15 text-amber-100 border-amber-300/50",
+                ];
+                return (
+                  <span
+                    data-tag={tag.toLowerCase()}
+                    class={`px-3 py-1 border rounded-full text-sm ${
+                      palette[index % palette.length]
+                    }`}
+                    aria-label={`Technology: ${tag}`}
+                  >
+                    {tag}
+                  </span>
+                );
+              })
+            }
+          </div>
+
+          <div class="flex gap-3">
+            {
+              project.demoUrl && (
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex-1 text-center px-4 py-2 bg-gradient-to-r from-cyan-800 via-indigo-800 to-fuchsia-800 text-white rounded-xl border border-white/20 focus-visible:ring-2 focus-visible:ring-cyan-200/40"
+                  aria-label={`View live demo of ${project.title}`}
+                >
+                  Live Demo
+                </a>
+              )
+            }
+            {
+              project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex-1 text-center px-4 py-2 border border-white/35 text-white/90 rounded-xl hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-cyan-200/40 transition-colors"
+                  aria-label={`View source code of ${project.title}`}
+                >
+                  View Code
+                </a>
+              )
+            }
+            {!hasLinks && (
+              <span class="px-3 py-1 border border-white/20 text-white/55 rounded-xl text-xs uppercase tracking-[0.14em]">
+                Under NDA
+              </span>
+            )}
+          </div>
+        </div>
+      </>
+    )
+  }
+</article>

@@ -7,9 +7,15 @@ interface Props {
   project: Project;
   eager?: boolean;
   variant?: "grid" | "list";
+  showActions?: boolean;
 }
 
-const { project, eager = false, variant = "grid" } = Astro.props as Props;
+const {
+  project,
+  eager = false,
+  variant = "grid",
+  showActions = variant === "grid",
+} = Astro.props as Props;
 const hasLinks = Boolean(project.demoUrl || project.githubUrl);
 const isList = variant === "list";
 ---
@@ -44,6 +50,13 @@ const isList = variant === "list";
               loading={eager ? "eager" : "lazy"}
             />
           )}
+          {!hasLinks && (
+            <div class="mt-2 flex justify-center">
+              <span class="inline-flex px-2 py-1 border border-white/20 text-white/55 rounded-md text-[10px] uppercase tracking-[0.12em]">
+                Under NDA
+              </span>
+            </div>
+          )}
         </div>
         <div class="flex-1">
           <h4
@@ -76,39 +89,38 @@ const isList = variant === "list";
               })
             }
           </div>
-          <div class="flex flex-wrap gap-2">
-            {
-              project.demoUrl && (
-                <a
-                  href={project.demoUrl}
-                  class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-cyan-300/70 transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`View live demo of ${project.title}`}
-                >
-                  Live Demo
-                </a>
-              )
-            }
-            {
-              project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-fuchsia-300/70 transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`View source code of ${project.title}`}
-                >
-                  View Code
-                </a>
-              )
-            }
-            {!hasLinks && (
-              <span class="px-3 py-1 border border-white/20 text-white/55 rounded-lg text-xs uppercase tracking-[0.14em]">
-                Under NDA
-              </span>
-            )}
-          </div>
+          {
+            showActions && (
+              <div class="flex flex-wrap gap-2">
+                {
+                  project.demoUrl && (
+                    <a
+                      href={project.demoUrl}
+                      class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-cyan-300/70 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View live demo of ${project.title}`}
+                    >
+                      Live Demo
+                    </a>
+                  )
+                }
+                {
+                  project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-fuchsia-300/70 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View source code of ${project.title}`}
+                    >
+                      View Code
+                    </a>
+                  )
+                }
+              </div>
+            )
+          }
         </div>
       </div>
     ) : (

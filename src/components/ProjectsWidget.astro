@@ -13,7 +13,7 @@ const featuredProjects: Project[] = projects.slice(0, 3);
   <div class="grid gap-6">
     {
       featuredProjects.map((project) => {
-        return <ProjectCard project={project} variant="list" />;
+        return <ProjectCard project={project} variant="list" showActions={false} />;
       })
     }
   </div>

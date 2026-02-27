@@ -3,39 +3,28 @@ import Layout from "../layouts/Layout.astro";
 import Scene3D from "../components/Scene3D";
 ---
 
-<Layout title="Thank You | Portfolio Nicolás Loto">
+<Layout title="Thank You | Portfolio Nicolas Loto">
   <main
     class="relative min-h-screen flex items-center justify-center overflow-hidden"
   >
     <div class="absolute inset-0 z-0">
-      <Scene3D client:load />
+      <Scene3D client:visible />
     </div>
 
     <div class="container mx-auto px-4 z-10">
       <div
-        class="max-w-2xl mx-auto text-center bg-white/20 backdrop-blur-md rounded-3xl p-8 shadow-md shadow-black-500/10 border border-white/30 border-opacity-50 animate-fade-in"
-        style="will-change: opacity, transform;"
+        class="max-w-2xl mx-auto text-center bg-white/20 backdrop-blur-md rounded-3xl p-8 shadow-md shadow-black-500/10 border border-white/30 border-opacity-50"
       >
-        <h1
-          class="text-4xl font-bold text-black mb-6"
-          style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);"
-        >
-          Thank You!
-        </h1>
+        <h1 class="text-4xl font-bold text-white mb-6">Thank You!</h1>
 
-        <p
-          class="text-orange-600 mb-6"
-          style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);"
-        >
-          Your message has been sent successfully. I'll get back to you as soon
-          as possible.
+        <p class="text-white/80 mb-6">
+          Your message has been sent successfully. I will get back to you as
+          soon as possible.
         </p>
 
         <a
           href="/"
-          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-medium rounded-xl hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg hover:shadow-xl animate-slide-up"
-          class="btn-primary animate-slide-up"
-          style="animation-delay: 200ms;"
+          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-900 via-indigo-900 to-fuchsia-900 text-white font-medium rounded-xl border border-white/20 shadow-lg"
           aria-label="Back to Home"
         >
           <svg
@@ -55,35 +44,3 @@ import Scene3D from "../components/Scene3D";
     </div>
   </main>
 </Layout>
-
-<style>
-  .animate-fade-in {
-    animation: fadeIn 1s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-slide-up {
-    animation: slideUp 0.8s ease-in-out;
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style>

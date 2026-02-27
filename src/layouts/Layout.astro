@@ -1,7 +1,4 @@
 ---
-import "@fontsource-variable/inter";
-import "@fontsource/source-sans-pro";
-
 interface Props {
   title: string;
   description?: string;
@@ -9,7 +6,7 @@ interface Props {
 
 const {
   title,
-  description = "Nicolás' Portfolio | Web developer & UX/UI designer",
+  description = "Nicolas Portfolio | Frontend Developer & UX/UI Designer",
 } = Astro.props;
 ---
 
@@ -19,6 +16,7 @@ const {
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="dark" />
     <link
       rel="icon"
       type="image/svg+xml"
@@ -27,19 +25,89 @@ const {
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="bg-apple-gray-50 text-apple-gray-500">
+  <body class="text-slate-100">
     <slot />
+    <script is:inline>
+      (() => {
+        if (!window.matchMedia("(pointer: fine)").matches) return;
+
+        const cards = Array.from(
+          document.querySelectorAll(".bg-white\\/80, .bg-white\\/20, .hover-accent-card")
+        );
+
+        cards.forEach((card) => {
+          if (!(card instanceof HTMLElement)) return;
+          card.classList.add("foil-card");
+          let rafId = 0;
+
+          card.addEventListener(
+            "pointermove",
+            (e) => {
+              if (rafId) return;
+              rafId = requestAnimationFrame(() => {
+                const rect = card.getBoundingClientRect();
+                const px = ((e.clientX - rect.left) / rect.width) * 100;
+                const py = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty("--fx", `${px}%`);
+                card.style.setProperty("--fy", `${py}%`);
+                rafId = 0;
+              });
+            },
+            { passive: true }
+          );
+
+          card.addEventListener("pointerleave", () => {
+            card.style.setProperty("--fx", "50%");
+            card.style.setProperty("--fy", "50%");
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
 
 <style is:global>
+  @font-face {
+    font-family: "Geist";
+    src: url("/fonts/Geist-Variable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Geist Mono";
+    src: url("/fonts/GeistMono-Variable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Geist Pixel Grid";
+    src: url("/fonts/GeistPixel-Grid.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+
   :root {
-    --accent: rgb(0, 122, 255);
-    --accent-dark: rgb(0, 64, 221);
+    --font-geist-pixel-grid: "Geist Pixel Grid";
+    --bg-main: #050505;
+    --bg-elevated: rgba(18, 18, 18, 0.78);
+    --line: rgba(255, 255, 255, 0.1);
+    --text-main: #f3f3f3;
+    --text-muted: #b8b8b8;
+    --accent: #ffffff;
+    --accent-alt: #d9d9d9;
+    --hover-a: rgba(56, 189, 248, 0.16);
+    --hover-b: rgba(217, 70, 239, 0.14);
+    --hover-c: rgba(251, 191, 36, 0.12);
   }
 
   html {
-    font-family: "SF Pro Display", "Inter Variable", system-ui, sans-serif;
+    color-scheme: dark;
+    font-family: "Geist", system-ui, sans-serif;
     scroll-behavior: smooth;
   }
 
@@ -47,68 +115,239 @@ const {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    color: var(--text-main);
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.08), transparent 34%),
+      radial-gradient(circle at 80% 5%, rgba(255, 255, 255, 0.06), transparent 36%),
+      linear-gradient(180deg, #000 0%, var(--bg-main) 100%);
     overscroll-behavior: none;
+    position: relative;
   }
 
-@keyframes fade-up-visible {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.45;
+    background-image:
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  ::selection {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
   }
-}
 
-/* --- FIX FORM OVERFLOW Y BOTÓN INVISIBLE --- */
-#contact {
-  position: relative;
-  isolation: isolate;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden; /* evita que se salga en mobile */
-  box-sizing: border-box;
-}
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 3px,
+      rgba(255, 255, 255, 0.02) 4px
+    );
+  }
 
-/* asegura que el grid no rompa el ancho */
-#contact .grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-}
+  h1,
+  h2 {
+    font-family: var(--font-geist-pixel-grid), "Geist Mono", monospace;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
 
-@media (min-width: 768px) {
+  h3,
+  h4,
+  p,
+  span,
+  a,
+  input,
+  textarea,
+  button,
+  label {
+    font-family: "Geist", system-ui, sans-serif;
+  }
+
+  .bg-white\/80,
+  .bg-white\/50,
+  .bg-white\/20,
+  .bg-white {
+    background: var(--bg-elevated) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+
+  .bg-white\/80:hover,
+  .bg-white\/50:hover,
+  .bg-white\/20:hover,
+  .bg-white:hover {
+    border-color: rgba(255, 255, 255, 0.38) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  }
+
+  .hover-accent-card {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+  .hover-accent-card:hover {
+    border-color: rgba(255, 255, 255, 0.38) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  }
+
+  .foil-card {
+    --fx: 50%;
+    --fy: 50%;
+    will-change: background, border-color, box-shadow;
+    transition: border-color 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+  }
+
+  .foil-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.16;
+    transition: opacity 200ms ease;
+    background:
+      linear-gradient(
+        120deg,
+        rgba(56, 189, 248, 0.2),
+        rgba(217, 70, 239, 0.16),
+        rgba(251, 191, 36, 0.14)
+      ),
+      linear-gradient(
+        295deg,
+        rgba(251, 191, 36, 0.14),
+        rgba(56, 189, 248, 0.12),
+        rgba(217, 70, 239, 0.12)
+      );
+    background-size: 220% 220%, 220% 220%;
+    background-position: var(--fx) var(--fy), var(--fy) var(--fx);
+    mix-blend-mode: screen;
+    transform: scale(0.98);
+    transition: opacity 200ms ease, transform 220ms ease;
+  }
+
+  .foil-card:hover::before {
+    opacity: 0.42;
+    transform: scale(1);
+  }
+
+  .text-black {
+    color: var(--text-main) !important;
+  }
+
+  .glitch-text {
+    position: relative;
+    text-shadow: -1px 0 rgba(255, 255, 255, 0.45), 1px 0 rgba(170, 170, 170, 0.35);
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .glitch-text::before {
+    top: -1px;
+    color: rgba(255, 255, 255, 0.45);
+    clip-path: inset(0 0 45% 0);
+    animation: glitch-scan 3s infinite linear alternate-reverse;
+  }
+
+  .glitch-text::after {
+    top: 1px;
+    color: rgba(170, 170, 170, 0.45);
+    clip-path: inset(60% 0 0 0);
+    animation: glitch-scan 2.6s infinite linear alternate;
+  }
+
+  @keyframes glitch-scan {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-2px); }
+    40% { transform: translateX(2px); }
+    60% { transform: translateX(-1px); }
+    80% { transform: translateX(1px); }
+    100% { transform: translateX(0); }
+  }
+
+  @keyframes fade-up-visible {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #contact {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
   #contact .grid {
-    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
-}
 
-/* evita desbordes en los inputs y textareas */
-#contact input,
-#contact textarea {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-#contact a,
-#contact span {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
+  @media (min-width: 768px) {
+    #contact .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
+  #contact input,
+  #contact textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    color: var(--text-main);
+    border-color: rgba(255, 255, 255, 0.26);
+  }
 
+  #contact a,
+  #contact span {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
 
-
-/* mantiene el botón visible con animación */
-#contact-form button[type="submit"] {
-  opacity: 1 !important;
-  visibility: visible !important;
-  z-index: 10;
-  transform: none !important;
-  animation: fade-up-visible 0.6s ease-out 0.2s both;
-  will-change: opacity;
-}
+  #contact-form button[type="submit"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 10;
+    transform: none !important;
+    animation: fade-up-visible 0.6s ease-out 0.2s both;
+    will-change: opacity;
+  }
+</style>

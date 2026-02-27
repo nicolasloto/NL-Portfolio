@@ -39,9 +39,11 @@ const Scene3D = () => {
     // Create floating spheres
     const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
     const sphereMaterial = new THREE.MeshPhongMaterial({
-      color: 0xea580c,
+      color: 0xd9d9d9,
+      emissive: 0x111111,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.5,
+      shininess: 25,
     });
 
     const spheres: THREE.Mesh[] = [];
@@ -79,12 +81,16 @@ const Scene3D = () => {
     spheresRef.current = spheres;
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 3.5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.3);
     directionalLight.position.set(5, 5, 5);
     scene.add(directionalLight);
+
+    const rimLight = new THREE.PointLight(0xaaaaaa, 0.5, 35);
+    rimLight.position.set(-4, -2, -6);
+    scene.add(rimLight);
 
     camera.position.z = 5;
 

@@ -2,32 +2,27 @@
 import Layout from "../layouts/Layout.astro";
 import { ProjectCard } from "../components/ProjectCard";
 import { projects } from "../data/project";
-import { Image } from "astro:assets"; // Import Astro's Image component
 
-// Optimize local images
 const optimizedProjects = projects.map((project) => {
   if (typeof project.image !== "string") {
     return {
       ...project,
-      image: project.image.src, // Use the optimized image URL
+      image: project.image.src,
     };
   }
   return project;
 });
 
-// Get unique tags from all projects
-const allTags = [
-  ...new Set(projects.flatMap((project) => project.tags)),
-].sort();
+const allTags = [...new Set(projects.flatMap((project) => project.tags))].sort();
 ---
 
-<Layout title="Projects | Portfolio Nicolás Loto">
+<Layout title="Projects | Portfolio Nicolas Loto">
   <main class="min-h-screen py-20 px-4">
     <div class="container mx-auto max-w-6xl">
       <div class="text-center mb-12">
         <a
           href="/"
-          class="inline-flex items-center text-orange-600 hover:text-orange-800 mb-4"
+          class="inline-flex items-center text-white/70 hover:text-white mb-4 transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -42,14 +37,14 @@ const allTags = [
           </svg>
           Back to Home
         </a>
-        <h1 class="text-4xl font-bold text-orange-900 mb-4">My Projects</h1>
-        <p class="text-orange-600 max-w-2xl mx-auto">
-          Explore my latest projects and experiments. Each project represents a
-          unique challenge and solution.
+        <h1 class="text-4xl font-bold text-white mb-4">My Projects</h1>
+        <p class="text-white/70 max-w-2xl mx-auto">
+          Explore selected projects and experiments. Each one represents a
+          concrete problem solved end to end.
         </p>
       </div>
 
-      <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl mb-8">
+      <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl mb-8 border border-white/30">
         <div class="flex flex-col gap-4">
           <div class="flex gap-4">
             <div class="flex-1">
@@ -57,18 +52,19 @@ const allTags = [
                 type="text"
                 id="search"
                 placeholder="Search projects..."
-                class="w-full px-4 py-2 rounded-xl bg-white border border-orange-100 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-colors"
+                class="w-full px-4 py-2 rounded-xl bg-white/5 border border-white/20 text-white placeholder:text-white/45 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20 transition-colors"
               />
             </div>
             <button
               id="resetFilters"
-              class="px-4 py-2 text-orange-600 border border-orange-100 rounded-xl hover:bg-orange-50 transition-colors"
-              >Reset Filters</button
+              class="px-4 py-2 text-white/85 border border-white/20 rounded-xl hover:bg-white/10 transition-colors"
             >
+              Reset Filters
+            </button>
           </div>
 
           <div class="flex-1">
-            <p class="text-sm text-orange-600 mb-2">Filter by tags:</p>
+            <p class="text-sm text-white/65 mb-2">Filter by tags:</p>
             <div class="flex flex-wrap gap-2">
               {
                 allTags.map((tag) => (
@@ -78,7 +74,7 @@ const allTags = [
                       value={tag}
                       class="tag-checkbox hidden"
                     />
-                    <span class="px-3 py-1 rounded-full border border-orange-100 text-sm cursor-pointer hover:bg-orange-50 transition-colors tag-label">
+                    <span class="px-3 py-1 rounded-full border border-white/20 text-white/80 text-sm cursor-pointer hover:bg-white/10 transition-colors tag-label">
                       {tag}
                     </span>
                   </label>
@@ -157,18 +153,17 @@ const allTags = [
       });
     };
 
+    const updateTagLabel = (checkbox: HTMLInputElement) => {
+      const label = checkbox.nextElementSibling as HTMLElement | null;
+      if (!label) return;
+      label.classList.toggle("tag-label-active", checkbox.checked);
+    };
+
     const resetFilters = () => {
       searchInput.value = "";
       tagCheckboxes.forEach((checkbox) => {
         checkbox.checked = false;
-        const label = checkbox.nextElementSibling as HTMLElement;
-        if (label) {
-          label.classList.remove(
-            "bg-orange-500",
-            "text-white",
-            "border-orange-500"
-          );
-        }
+        updateTagLabel(checkbox);
       });
       filterProjects();
     };
@@ -176,23 +171,8 @@ const allTags = [
     searchInput.addEventListener("input", filterProjects);
     resetButton.addEventListener("click", resetFilters);
     tagCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", (e) => {
-        const label = (e.target as HTMLInputElement)
-          .nextElementSibling as HTMLElement;
-        if (label) {
-          label.classList.toggle(
-            "bg-orange-500",
-            (e.target as HTMLInputElement).checked
-          );
-          label.classList.toggle(
-            "text-white",
-            (e.target as HTMLInputElement).checked
-          );
-          label.classList.toggle(
-            "border-orange-500",
-            (e.target as HTMLInputElement).checked
-          );
-        }
+      checkbox.addEventListener("change", () => {
+        updateTagLabel(checkbox);
         filterProjects();
       });
     });
@@ -200,8 +180,10 @@ const allTags = [
 </script>
 
 <style>
-  .tag-checkbox:checked + .tag-label {
-    @apply bg-orange-500 text-white border-orange-500;
+  .tag-label-active {
+    background: rgba(56, 189, 248, 0.2);
+    color: #e5faff;
+    border-color: rgba(56, 189, 248, 0.7);
   }
 
   .project-wrapper {

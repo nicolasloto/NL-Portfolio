@@ -2,25 +2,21 @@
   id="contact"
   class="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-white/30"
 >
-  <h3 class="text-2xl font-semibold text-orange-900 mb-6">Get in Touch</h3>
+  <h3 class="text-2xl font-semibold text-white mb-6">Get in Touch</h3>
 
   <div class="grid md:grid-cols-2 gap-8">
     <form
       id="contact-form"
-      action="https://getform.io/f/bllyqejb"
+      action="/api/contact"
       method="POST"
       class="space-y-6"
     >
-      <input
-        type="hidden"
-        name="_redirect"
-        value="https://portfolio-nicolasloto.vercel.app/thank-you"
-      />
+      <input type="text" name="company" tabindex="-1" autocomplete="off" class="hidden" />
 
       <div>
         <label
           for="name"
-          class="block text-sm font-medium text-orange-800 mb-2"
+          class="block text-sm font-medium text-white/85 mb-2"
         >
           Name
         </label>
@@ -28,7 +24,7 @@
           type="text"
           id="name"
           name="name"
-          class="w-full px-4 py-3 rounded-xl bg-white/50 border border-orange-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/20 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20 placeholder:text-white/45"
           placeholder="Your name"
           required
         />
@@ -37,7 +33,7 @@
       <div>
         <label
           for="email"
-          class="block text-sm font-medium text-orange-800 mb-2"
+          class="block text-sm font-medium text-white/85 mb-2"
         >
           Email
         </label>
@@ -45,7 +41,7 @@
           type="email"
           id="email"
           name="email"
-          class="w-full px-4 py-3 rounded-xl bg-white/50 border border-orange-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/20 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20 placeholder:text-white/45"
           placeholder="your@email.com"
           required
         />
@@ -54,7 +50,7 @@
       <div>
         <label
           for="message"
-          class="block text-sm font-medium text-orange-800 mb-2"
+          class="block text-sm font-medium text-white/85 mb-2"
         >
           Message
         </label>
@@ -62,7 +58,7 @@
           id="message"
           name="message"
           rows="4"
-          class="w-full px-4 py-3 rounded-xl bg-white/50 border border-orange-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 resize-none"
+          class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/20 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20 resize-none placeholder:text-white/45"
           placeholder="Your message..."
           required></textarea>
       </div>
@@ -70,7 +66,7 @@
       <div class="mt-6">
         <button
           type="submit"
-          class="w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white font-medium px-6 py-3 rounded-xl hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+          class="w-full bg-gradient-to-r from-cyan-900 via-indigo-900 to-fuchsia-900 text-white font-medium px-6 py-3 rounded-xl border border-white/20 shadow-[0_8px_20px_rgba(0,0,0,0.25)]"
         >
           Send Message
         </button>
@@ -78,21 +74,21 @@
     </form>
 
     <div class="space-y-6">
-      <div class="bg-orange-50 rounded-2xl p-6">
-        <h4 class="text-lg font-medium text-orange-900 mb-4">
+      <div class="hover-accent-card bg-white/10 rounded-2xl p-6 border border-white/20">
+        <h4 class="text-lg font-medium text-white mb-4">
           Contact Information
         </h4>
         <div class="space-y-4">
           <div class="flex items-center gap-3">
             <div
-              class="w-10 h-10 flex items-center justify-center bg-orange-100 rounded-full"
+              class="w-10 h-10 flex items-center justify-center bg-white/10 border border-white/20 rounded-full"
               aria-label="Email"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                class="w-5 h-5 text-orange-800"
+                class="w-5 h-5 text-white/85"
               >
                 <path
                   d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"
@@ -104,7 +100,7 @@
             </div>
             <a
               href="mailto:lotohectornicolas@gmail.com"
-              class="text-orange-800 hover:text-orange-600 transition-colors"
+              class="text-white/75 hover:text-cyan-200 transition-colors"
             >
               lotohectornicolas@gmail.com
             </a>
@@ -112,14 +108,14 @@
 
           <div class="flex items-center gap-3">
             <div
-              class="w-10 h-10 flex items-center justify-center bg-orange-100 rounded-full"
+              class="w-10 h-10 flex items-center justify-center bg-white/10 border border-white/20 rounded-full"
               aria-label="Phone"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                class="w-5 h-5 text-orange-800"
+                class="w-5 h-5 text-white/85"
               >
                 <path
                   fill-rule="evenodd"
@@ -129,7 +125,7 @@
             </div>
             <a
               href="tel:+5493855374055"
-              class="text-orange-800 hover:text-orange-600 transition-colors"
+              class="text-white/75 hover:text-fuchsia-200 transition-colors"
             >
               +54 9 348 467-0283
             </a>
@@ -137,14 +133,14 @@
 
           <div class="flex items-center gap-3">
             <div
-              class="w-10 h-10 flex items-center justify-center bg-orange-100 rounded-full"
+              class="w-10 h-10 flex items-center justify-center bg-white/10 border border-white/20 rounded-full"
               aria-label="Location"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                class="w-5 h-5 text-orange-800"
+                class="w-5 h-5 text-white/85"
               >
                 <path
                   fill-rule="evenodd"
@@ -152,49 +148,18 @@
                   clip-rule="evenodd"></path>
               </svg>
             </div>
-            <span class="text-orange-800"> Belén de Escobar, Buenos Aires, AR </span>
+            <span class="text-white/75">Buenos Aires, AR</span>
           </div>
         </div>
       </div>
 
-      <div class="bg-orange-50 rounded-2xl p-6">
-        <h4 class="text-lg font-medium text-orange-900 mb-4">Availability</h4>
-        <div class="space-y-2 text-orange-800">
-          <p>Monday - Saturday</p>
-          <p class="font-medium text-orange-900">10:00 - 22:00 (GMT -3)</p>
+      <div class="hover-accent-card bg-white/10 rounded-2xl p-6 border border-white/20">
+        <h4 class="text-lg font-medium text-white mb-4">Availability</h4>
+        <div class="space-y-2 text-white/75">
+          <p>Monday - Friday</p>
+          <p class="font-medium text-white">07:00 - 23:00 (GMT -3)</p>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<script>
-  document
-    .getElementById("contact-form")
-    .addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const formData = new FormData(this);
-
-      fetch("https://getform.io/f/bllyqejb", {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => {
-          if (response.ok) {
-            window.location.href =
-              "https://portfolio-nicolasloto.vercel.app/thank-you";
-          } else {
-            alert(
-              "Error al enviar el formulario. Por favor, inténtalo de nuevo."
-            );
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert(
-            "Error al enviar el formulario. Por favor, inténtalo de nuevo."
-          );
-        });
-    });
-</script>

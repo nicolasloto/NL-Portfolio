@@ -18,30 +18,43 @@ const skills: Skill[] = [
   { name: "PHP", level: "Basic", icon: "🐘" },
 ];
 
-const levelColors = {
-  Expert: "bg-indigo-100 text-indigo-800",
-  Advanced: "bg-teal-100 text-teal-800",
-  Intermediate: "bg-orange-100 text-orange-800",
-  Basic: "bg-yellow-100 text-yellow-800",
+const levelRowColors = {
+  Expert: "hover:bg-emerald-500/10 hover:border-emerald-400/60",
+  Advanced: "hover:bg-lime-500/10 hover:border-lime-400/60",
+  Intermediate: "hover:bg-amber-500/10 hover:border-amber-400/60",
+  Basic: "hover:bg-red-500/10 hover:border-red-400/60",
+};
+
+const levelBadgeColors = {
+  Expert:
+    "bg-zinc-700 text-white border border-zinc-500 group-hover:bg-emerald-600 group-hover:border-emerald-300",
+  Advanced:
+    "bg-zinc-700 text-white border border-zinc-500 group-hover:bg-lime-600 group-hover:border-lime-300",
+  Intermediate:
+    "bg-zinc-700 text-white border border-zinc-500 group-hover:bg-amber-600 group-hover:border-amber-300",
+  Basic:
+    "bg-zinc-700 text-white border border-zinc-500 group-hover:bg-red-600 group-hover:border-red-300",
 };
 ---
 
 <div
   class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/30"
 >
-  <h3 class="text-2xl font-semibold mb-4 text-gray-800">Skills</h3>
+  <h3 class="text-2xl font-semibold mb-4 text-white">Skills</h3>
   <div class="space-y-4">
     {
       skills.map((skill) => (
-        <div class="flex items-center justify-between p-3 hover:bg-gray-100 rounded-xl transition-colors duration-200">
+        <div
+          class={`group flex items-center justify-between p-3 rounded-xl transition-colors duration-200 border border-transparent ${levelRowColors[skill.level]}`}
+        >
           <div class="flex items-center gap-3">
             <span class="text-xl" aria-hidden="true">
               {skill.icon}
             </span>
-            <span class="font-medium text-gray-700">{skill.name}</span>
+            <span class="font-medium text-white/90">{skill.name}</span>
           </div>
           <span
-            class={`px-3 py-1 rounded-full text-sm font-medium shadow-sm ${levelColors[skill.level]}`}
+            class={`px-3 py-1 rounded-full text-sm font-medium shadow-sm transition-colors duration-200 ${levelBadgeColors[skill.level]}`}
           >
             {skill.level}
           </span>

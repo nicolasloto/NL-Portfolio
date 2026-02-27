@@ -22,19 +22,20 @@ const testimonials: Testimonial[] = [
 ---
 
 <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/30">
-  <h3 class="text-2xl font-semibold text-orange-900 mb-6">What People Say</h3>
+  <h3 class="text-2xl font-semibold text-white mb-6">What People Say</h3>
   <div class="grid md:grid-cols-2 gap-6">
     {
       testimonials.map((testimonial) => (
         <article
-          class="bg-gradient-to-br from-orange-50 to-white p-6 rounded-2xl hover:shadow-lg transition-all duration-300"
+          class="group hover-accent-card bg-white/20 p-6 rounded-2xl hover:shadow-lg transition-all duration-300 border border-white/20"
           aria-labelledby={`testimonial-${testimonial.author.toLowerCase().replace(/\s+/g, '-')}`}
         >
+          <div class="absolute top-3 right-3 text-white/40 text-lg transition-colors duration-300 group-hover:text-fuchsia-300">"</div>
           <div class="flex gap-4 items-start">
             <Image
               src={testimonial.avatar}
               alt={testimonial.author}
-              class="w-12 h-12 rounded-full object-cover"
+              class="w-12 h-12 rounded-full object-cover border border-white/20 transition-colors duration-300 group-hover:border-cyan-300/70"
               width={48}
               height={48}
               loading="lazy"
@@ -42,13 +43,13 @@ const testimonials: Testimonial[] = [
             <div class="flex-1">
               <p
                 id={`testimonial-${testimonial.author.toLowerCase().replace(/\s+/g, '-')}`}
-                class="text-orange-800/90 mb-4"
+                class="text-white/70 mb-4 transition-colors duration-300 group-hover:text-white/90"
               >
                 {testimonial.content}
               </p>
               <div>
-                <p class="font-medium text-orange-900">{testimonial.author}</p>
-                <p class="text-sm text-orange-800">
+                <p class="font-medium text-white transition-colors duration-300 group-hover:text-cyan-200">{testimonial.author}</p>
+                <p class="text-sm text-white/65 transition-colors duration-300 group-hover:text-fuchsia-200">
                   {testimonial.role} at {testimonial.company}
                 </p>
               </div>

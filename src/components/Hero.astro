@@ -8,7 +8,7 @@ import pfp from "/src/assets/pfp.jpg";
   class="relative min-h-screen flex items-center justify-center overflow-hidden"
 >
   <div class="absolute inset-0 z-0">
-    <Scene3D client:load />
+    <Scene3D client:visible />
   </div>
 
   <div class="container mx-auto px-4 z-10">
@@ -16,21 +16,20 @@ import pfp from "/src/assets/pfp.jpg";
       class="max-w-4xl mx-auto text-center bg-white/20 backdrop-blur-sm rounded-3xl p-10 shadow-md shadow-black-500/10 border border-white/30 border-opacity-50 relative overflow-hidden"
     >
       <div
-        class="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-transparent opacity-33 pointer-events-none"
+        class="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/5 pointer-events-none"
       >
       </div>
 
-      <div class="flex flex-col items-center mb-6 animate-fade-in">
-        <!-- Botón envolvente: más fiable que depender directamente del id del <img> -->
+      <div class="flex flex-col items-center mb-6">
         <button
           id="pfp-btn"
           type="button"
-          aria-label="Abrir imagen de perfil en modal"
-          class="w-36 h-36 rounded-full border-4 border-white/50 shadow-2xl mb-4 overflow-hidden bg-gradient-to-br from-orange-100 to-orange-50 hover:scale-105 transition-transform cursor-zoom-in focus:outline-none"
+          aria-label="Open profile image in modal"
+          class="w-36 h-36 rounded-full border-2 border-white/40 shadow-2xl mb-4 overflow-hidden bg-gradient-to-br from-white/10 to-slate-900 transition-all duration-300 ease-out hover:border-white/70 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] cursor-zoom-in focus:outline-none"
         >
           <Image
             src={pfp}
-            alt="Foto de perfil de Nicolás Loto"
+            alt="Profile photo of Nicolas Loto"
             class="w-full h-full object-cover"
             width={800}
             height={800}
@@ -42,35 +41,32 @@ import pfp from "/src/assets/pfp.jpg";
         </button>
 
         <h1
-          class="text-4xl md:text-7xl font-bold mb-4 text-black"
-          style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);"
+          class="text-4xl md:text-7xl font-normal normal-case mb-4 text-white font-pixel"
+          style="font-family: var(--font-geist-pixel-grid), 'Geist Mono', monospace;"
         >
           Nicolás Loto
         </h1>
 
         <h2
-          class="text-2xl md:text-4xl text-orange-600 mb-6 font-medium"
-          style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);"
+          class="text-xl md:text-3xl text-white/90 mb-6 font-normal normal-case tracking-[0.06em] font-pixel"
+          style="font-family: var(--font-geist-pixel-grid), 'Geist Mono', monospace;"
         >
-          Frontend Dev | UX/UI Design
+          Frontend | UX/UI
         </h2>
       </div>
 
-      <div
-        class="flex gap-6 justify-center animate-slide-up"
-        style="animation-delay: 200ms;"
-      >
+      <div class="flex gap-6 justify-center">
         <a
           href="/projects"
-          class="bg-white/20 text-orange-800 px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-white/30 transition-colors backdrop-blur-sm border border-white/30 shadow-lg shadow-black-500/10"
-          aria-label="Ver mis proyectos"
+          class="bg-white/20 text-white px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-white/30 transition-colors backdrop-blur-sm border border-white/40 shadow-lg shadow-black-500/10 font-mono tracking-wide uppercase text-sm"
+          aria-label="View my projects"
         >
           View My Work
         </a>
         <a
           href="#contact"
-          class="bg-orange-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-orange-700 transition-colors shadow-lg shadow-black-500/30"
-          aria-label="Contactarme"
+          class="bg-white text-black px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-gray-200 transition-colors shadow-lg shadow-black-500/30 font-mono tracking-wide uppercase text-sm"
+          aria-label="Contact me"
         >
           Get in Touch
         </a>
@@ -113,7 +109,6 @@ import pfp from "/src/assets/pfp.jpg";
     </div>
   </div>
 
-  <!-- Modal ampliación -->
   <div
     id="pfp-modal"
     class="hidden fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-6"
@@ -121,33 +116,28 @@ import pfp from "/src/assets/pfp.jpg";
     aria-hidden="true"
     aria-modal="true"
   >
-    <!-- fondo (para detectar clicks fuera) -->
     <div id="pfp-modal-backdrop" class="absolute inset-0"></div>
 
     <div class="relative z-10 max-w-[95vw] max-h-[95vh]">
       <button
         id="pfp-modal-close"
-        aria-label="Cerrar imagen"
-        class="absolute -top-3 -right-3 z-20 bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl hover:bg-orange-500 transition-colors focus:outline-none"
+        aria-label="Close image"
+        class="absolute -top-3 -right-3 z-20 bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl hover:bg-white hover:text-black transition-colors focus:outline-none"
       >
-        ✕
+        x
       </button>
 
       <img
         id="pfp-modal-img"
         src=""
-        alt="Foto ampliada de Nicolás Loto"
+        alt="Expanded photo of Nicolas Loto"
         class="block max-w-full max-h-[85vh] rounded-3xl shadow-2xl border border-white/20 object-contain"
       />
     </div>
   </div>
 
-  <!-- Script robusto: delegación, currentSrc, Escape key -->
   <script is:inline type="module">
     (function () {
-      // DEBUG: quitar o comentar en producción
-      // console.log('pfp modal script init');
-
       const openButtonSelector = "#pfp-btn";
       const modal = document.getElementById("pfp-modal");
       const modalImg = document.getElementById("pfp-modal-img");
@@ -159,52 +149,37 @@ import pfp from "/src/assets/pfp.jpg";
         modalImg.src = src || "";
         modal.classList.remove("hidden");
         modal.setAttribute("aria-hidden", "false");
-        // lock scroll
         document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
       }
 
       function closeModal() {
-        if (!modal) return;
+        if (!modal || !modalImg) return;
         modal.classList.add("hidden");
         modal.setAttribute("aria-hidden", "true");
         modalImg.src = "";
-        // restore scroll
         document.documentElement.style.overflow = "";
         document.body.style.overflow = "";
       }
 
-      // Delegación: escucha clicks en documento para mayor robustez ante re-renders
       document.addEventListener("click", (e) => {
         const btn = e.target.closest(openButtonSelector);
         if (btn) {
-          // buscamos la <img> dentro del botón generado por <Image />
           const img = btn.querySelector("img");
           const src = img?.currentSrc || img?.src || img?.getAttribute("src");
-          if (!src) {
-            console.warn("No se encontró src de la imagen de perfil.");
-            return;
-          }
+          if (!src) return;
           openModalWithSrc(src);
         }
 
-        // cierre por click en el backdrop (detecta clicks fuera del contenido)
-        if (e.target === backdrop) {
-          closeModal();
-        }
+        if (e.target === backdrop) closeModal();
       });
 
-      // cierre por botón ✕
-      if (closeBtn) {
-        closeBtn.addEventListener("click", () => closeModal());
-      }
+      if (closeBtn) closeBtn.addEventListener("click", () => closeModal());
 
-      // teclado: Escape para cerrar
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeModal();
       });
 
-      // accesibilidad: si el modal se abre, enfocar el botón de cierre
       const obs = new MutationObserver(() => {
         if (!modal) return;
         if (!modal.classList.contains("hidden")) {
@@ -212,6 +187,7 @@ import pfp from "/src/assets/pfp.jpg";
           focusTarget?.focus();
         }
       });
+
       if (modal) {
         obs.observe(modal, { attributes: true, attributeFilter: ["class"] });
       }

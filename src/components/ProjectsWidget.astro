@@ -10,21 +10,20 @@ const featuredProjects: Project[] = projects;
   class="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/30"
 >
   <div class="md:flex justify-between items-center mb-6">
-    <h3 class="text-2xl font-semibold text-orange-900">Featured Projects</h3>
+    <h3 class="text-2xl font-semibold text-white">Featured Projects</h3>
     <a
       href="/projects"
-      class="text-orange-600 hover:text-orange-800 transition-colors text-sm"
+      class="text-white/75 hover:text-white transition-colors text-sm"
       aria-label="View all projects"
     >
-      View all projects →
-    </a>
+      View all projects</a>
   </div>
   <div class="grid gap-6">
     {
       featuredProjects.map((project) => (
         <article
           key={project.id}
-          class="block bg-gradient-to-br from-orange-50 to-white p-4 sm:p-6 rounded-2xl hover:shadow-lg transition-all duration-300"
+          class="group hover-accent-card block bg-white/20 p-4 sm:p-6 rounded-2xl hover:shadow-lg transition-all duration-300 border border-white/20"
         >
           <a
             href={project.demoUrl}
@@ -40,19 +39,28 @@ const featuredProjects: Project[] = projects;
               loading="lazy"
             />
             <div class="flex-1">
-              <h4 class="text-xl font-medium text-orange-900 mb-2">
+              <h4 class="text-xl font-medium text-white mb-2 transition-colors duration-300 group-hover:text-cyan-200">
                 {project.title}
               </h4>
-              <p class="text-orange-600 mb-3">{project.description}</p>
+              <p class="text-white/65 mb-3 transition-colors duration-300 group-hover:text-white/90">{project.description}</p>
               <div class="flex flex-wrap gap-2">
-                {project.tags.map((tech) => (
-                  <span
-                    class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm"
-                    aria-label={`Technology: ${tech}`}
-                  >
-                    {tech}
-                  </span>
-                ))}
+                {project.tags.map((tech, techIndex) => {
+                  const hoverColor =
+                    techIndex % 3 === 0
+                      ? "group-hover:text-cyan-200 group-hover:border-cyan-300/70"
+                      : techIndex % 3 === 1
+                        ? "group-hover:text-fuchsia-200 group-hover:border-fuchsia-300/70"
+                        : "group-hover:text-amber-200 group-hover:border-amber-300/70";
+
+                  return (
+                    <span
+                      class={`px-3 py-1 bg-white/10 text-white/85 border border-white/30 rounded-full text-sm transition-colors duration-300 ${hoverColor}`}
+                      aria-label={`Technology: ${tech}`}
+                    >
+                      {tech}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           </a>
@@ -61,3 +69,4 @@ const featuredProjects: Project[] = projects;
     }
   </div>
 </div>
+

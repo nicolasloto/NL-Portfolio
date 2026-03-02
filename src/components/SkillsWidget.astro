@@ -19,21 +19,17 @@ const skills: Skill[] = [
 ];
 
 const levelRowColors = {
-  Expert: "hover:bg-emerald-500/10 hover:border-emerald-400/60",
-  Advanced: "hover:bg-lime-500/10 hover:border-lime-400/60",
-  Intermediate: "hover:bg-amber-500/10 hover:border-amber-400/60",
-  Basic: "hover:bg-red-500/10 hover:border-red-400/60",
+  Expert: "bg-zinc-800/35 hover:bg-emerald-500/[0.12] hover:border-emerald-300/[0.68]",
+  Advanced: "bg-zinc-800/35 hover:bg-emerald-500/[0.09] hover:border-emerald-300/[0.56]",
+  Intermediate: "bg-zinc-800/35 hover:bg-emerald-500/[0.06] hover:border-emerald-300/[0.44]",
+  Basic: "bg-zinc-800/35 hover:bg-emerald-500/[0.03] hover:border-emerald-300/[0.32]",
 };
 
 const levelBadgeColors = {
-  Expert:
-    "bg-zinc-700 text-white border border-zinc-500 group-hover:bg-emerald-600 group-hover:border-emerald-300",
-  Advanced:
-    "bg-zinc-700 text-white border border-zinc-500 group-hover:bg-lime-600 group-hover:border-lime-300",
-  Intermediate:
-    "bg-zinc-700 text-white border border-zinc-500 group-hover:bg-amber-600 group-hover:border-amber-300",
-  Basic:
-    "bg-zinc-700 text-white border border-zinc-500 group-hover:bg-red-600 group-hover:border-red-300",
+  Expert: "badge-expert",
+  Advanced: "badge-advanced",
+  Intermediate: "badge-intermediate",
+  Basic: "badge-basic",
 };
 ---
 
@@ -45,7 +41,7 @@ const levelBadgeColors = {
     {
       skills.map((skill) => (
         <div
-          class={`group flex items-center justify-between p-3 rounded-xl transition-colors duration-200 border border-transparent ${levelRowColors[skill.level]}`}
+          class={`group skill-row level-${skill.level.toLowerCase()} flex items-center justify-between p-3 rounded-xl transition-colors duration-200 border border-transparent ${levelRowColors[skill.level]}`}
         >
           <div class="flex items-center gap-3">
             <span class="text-xl" aria-hidden="true">
@@ -54,7 +50,7 @@ const levelBadgeColors = {
             <span class="font-medium text-white/90">{skill.name}</span>
           </div>
           <span
-            class={`px-3 py-1 rounded-full text-sm font-medium shadow-sm transition-colors duration-200 ${levelBadgeColors[skill.level]}`}
+            class={`skill-badge px-3 py-1 rounded-full text-sm font-medium shadow-sm transition-colors duration-200 ${levelBadgeColors[skill.level]}`}
           >
             {skill.level}
           </span>
@@ -63,3 +59,35 @@ const levelBadgeColors = {
     }
   </div>
 </div>
+
+<style>
+  .skill-badge {
+    background: rgba(63, 63, 70, 0.95);
+    color: rgba(244, 244, 245, 0.95);
+    border: 1px solid rgba(113, 113, 122, 0.8);
+  }
+
+  .skill-row.level-basic:hover .skill-badge {
+    background: rgba(6, 78, 59, 0.58);
+    border-color: rgba(167, 243, 208, 0.5);
+    color: rgba(236, 253, 245, 0.95);
+  }
+
+  .skill-row.level-intermediate:hover .skill-badge {
+    background: rgba(6, 95, 70, 0.72);
+    border-color: rgba(167, 243, 208, 0.6);
+    color: rgba(236, 253, 245, 0.95);
+  }
+
+  .skill-row.level-advanced:hover .skill-badge {
+    background: rgba(6, 120, 86, 0.84);
+    border-color: rgba(167, 243, 208, 0.72);
+    color: rgba(240, 253, 250, 1);
+  }
+
+  .skill-row.level-expert:hover .skill-badge {
+    background: rgba(5, 150, 105, 0.95);
+    border-color: rgba(167, 243, 208, 0.84);
+    color: rgba(255, 255, 255, 1);
+  }
+</style>

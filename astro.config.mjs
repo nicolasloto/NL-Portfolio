@@ -4,4 +4,11 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   integrations: [tailwind(), react()],
+  vite: {
+    resolve: {
+      alias: {
+        "astro/assets/fonts/runtime": "astro/assets/fonts/runtime.js",
+      },
+    },
+  },
 });

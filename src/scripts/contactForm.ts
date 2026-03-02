@@ -6,6 +6,9 @@ export function initContactForm(): void {
   const emailInput = form.querySelector("#email");
   const emailSuggestions = form.querySelector("#email-suggestions");
   const messageInput = form.querySelector("#message");
+  const nameError = form.querySelector("#name-error");
+  const emailError = form.querySelector("#email-error");
+  const messageError = form.querySelector("#message-error");
   const feedback = form.querySelector("#contact-feedback");
   const submitBtn = form.querySelector('button[type="submit"]');
 
@@ -29,24 +32,31 @@ export function initContactForm(): void {
     else feedback.classList.add("text-white/80");
   };
 
+  const setInlineError = (el: Element | null, message = "") => {
+    if (!(el instanceof HTMLElement)) return;
+    el.textContent = message;
+  };
+
   const setNameMessage = () => {
+    let msg = "";
     if (nameInput.validity.valueMissing) {
-      nameInput.setCustomValidity("Please enter your name.");
+      msg = "Please enter your name.";
     } else if (nameInput.validity.tooShort || nameInput.validity.patternMismatch) {
-      nameInput.setCustomValidity("Use 2-120 valid characters for your name.");
-    } else {
-      nameInput.setCustomValidity("");
+      msg = "Use 2-120 valid characters for your name.";
     }
+    nameInput.setCustomValidity(msg);
+    setInlineError(nameError, msg);
   };
 
   const setEmailMessage = () => {
+    let msg = "";
     if (emailInput.validity.valueMissing) {
-      emailInput.setCustomValidity("Please enter your email.");
+      msg = "Please enter your email.";
     } else if (emailInput.validity.typeMismatch) {
-      emailInput.setCustomValidity("Please enter a valid email address.");
-    } else {
-      emailInput.setCustomValidity("");
+      msg = "Please enter a valid email address.";
     }
+    emailInput.setCustomValidity(msg);
+    setInlineError(emailError, msg);
   };
 
   const updateEmailSuggestions = () => {
@@ -71,22 +81,28 @@ export function initContactForm(): void {
   };
 
   const setMessageText = () => {
+    let msg = "";
     if (messageInput.validity.valueMissing) {
-      messageInput.setCustomValidity("Please add a message.");
+      msg = "Please add a message.";
     } else if (messageInput.validity.tooShort) {
-      messageInput.setCustomValidity("Message must be at least 10 characters.");
-    } else {
-      messageInput.setCustomValidity("");
+      msg = "Message must be at least 10 characters.";
     }
+    messageInput.setCustomValidity(msg);
+    setInlineError(messageError, msg);
   };
 
   nameInput.addEventListener("input", setNameMessage);
+  nameInput.addEventListener("blur", setNameMessage);
   emailInput.addEventListener("input", () => {
     setEmailMessage();
     updateEmailSuggestions();
   });
-  emailInput.addEventListener("blur", updateEmailSuggestions);
+  emailInput.addEventListener("blur", () => {
+    setEmailMessage();
+    updateEmailSuggestions();
+  });
   messageInput.addEventListener("input", setMessageText);
+  messageInput.addEventListener("blur", setMessageText);
 
   if (emailSuggestions instanceof HTMLElement) {
     emailSuggestions.addEventListener("click", (event) => {
@@ -107,7 +123,8 @@ export function initContactForm(): void {
 
     if (!form.checkValidity()) {
       event.preventDefault();
-      form.reportValidity();
+      const firstInvalid = form.querySelector(":invalid");
+      if (firstInvalid instanceof HTMLElement) firstInvalid.focus();
       return;
     }
 
@@ -134,6 +151,9 @@ export function initContactForm(): void {
       if (response.ok && data?.ok) {
         setFeedback("Message sent successfully.", "ok");
         form.reset();
+        setInlineError(nameError, "");
+        setInlineError(emailError, "");
+        setInlineError(messageError, "");
         updateEmailSuggestions();
       } else if (response.status === 400) {
         setFeedback("Please complete all required fields correctly.", "error");

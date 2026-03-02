@@ -30,12 +30,12 @@ const testimonials: Testimonial[] = [
           class="group hover-accent-card surface-card js-foil p-6 rounded-2xl hover:shadow-lg transition-all duration-300 border border-white/20"
           aria-labelledby={`testimonial-${testimonial.author.toLowerCase().replace(/\s+/g, '-')}`}
         >
-          <div class="absolute top-3 right-3 text-white/40 text-lg transition-colors duration-300 group-hover:text-fuchsia-300">"</div>
+          <div class="absolute top-3 right-3 text-white/40 text-lg transition-colors duration-300 group-hover:text-emerald-300">"</div>
           <div class="flex gap-4 items-start">
             <Image
               src={testimonial.avatar}
               alt={testimonial.author}
-              class="w-12 h-12 rounded-full object-cover border border-white/20 transition-colors duration-300 group-hover:border-cyan-300/70"
+              class="w-12 h-12 rounded-full object-cover border border-white/20 transition-colors duration-300 group-hover:border-emerald-300/60"
               width={48}
               height={48}
               loading="lazy"
@@ -48,8 +48,8 @@ const testimonials: Testimonial[] = [
                 {testimonial.content}
               </p>
               <div>
-                <p class="font-medium text-white transition-colors duration-300 group-hover:text-cyan-200">{testimonial.author}</p>
-                <p class="text-sm text-white/65 transition-colors duration-300 group-hover:text-fuchsia-200">
+                <p class="font-medium text-white transition-colors duration-300 group-hover:text-emerald-200">{testimonial.author}</p>
+                <p class="text-sm text-white/65 transition-colors duration-300 group-hover:text-emerald-100">
                   {testimonial.role} at {testimonial.company}
                 </p>
               </div>

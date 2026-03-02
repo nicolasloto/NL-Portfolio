@@ -1,15 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Scene3D from "../components/Scene3D";
+import DitherBackground from "../components/DitherBackground.astro";
 ---
 
 <Layout title="Thank You | Portfolio Nicolas Loto">
   <main
     class="relative min-h-screen flex items-center justify-center overflow-hidden"
   >
-    <div class="absolute inset-0 z-0">
-      <Scene3D client:visible />
-    </div>
+    <DitherBackground class="absolute inset-0 z-0" intensity="strong" />
 
     <div class="container mx-auto px-4 z-10">
       <div
@@ -24,7 +22,7 @@ import Scene3D from "../components/Scene3D";
 
         <a
           href="/"
-          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-900 via-indigo-900 to-fuchsia-900 text-white font-medium rounded-xl border border-white/20 shadow-lg"
+          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-zinc-800 via-emerald-900 to-zinc-800 text-white font-medium rounded-xl border border-white/20 shadow-lg"
           aria-label="Back to Home"
         >
           <svg

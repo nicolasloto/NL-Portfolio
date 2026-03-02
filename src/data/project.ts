@@ -31,9 +31,9 @@ export const projects: Project[] = [
     id: 3,
     title: "Quality Wines Store",
     description:
-      "Responsive e-commerce platform delivering a modern, seamless shopping experience. Includes product listings, detailed pages, an intuitive cart, secure authentication, and optimized data management for performance and security.",
+      "Responsive e-commerce platform delivering a modern, seamless shopping experience. Includes product listings, detailed pages and an intuitive cart.",
     image: qualityLanding,
-    tags: ["eCommerce", "React", "Tailwind", "Node.js"],
+    tags: ["Store", "React", "Tailwind", "Node.js"],
     demoUrl: "https://qualitywines-store.vercel.app/",
     githubUrl:
       "https://github.com/Grupo-ITSE-2023-para-Quality/Store-quality-wines",

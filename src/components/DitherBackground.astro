@@ -1,0 +1,203 @@
+---
+interface Props {
+  class?: string;
+  intensity?: "soft" | "medium" | "strong";
+}
+
+const { class: className = "", intensity = "medium" } = Astro.props as Props;
+
+const noiseOpacity =
+  intensity === "soft" ? "0.05" : intensity === "strong" ? "0.09" : "0.07";
+const gridOpacity =
+  intensity === "soft" ? "0.06" : intensity === "strong" ? "0.12" : "0.085";
+const glyphOpacity =
+  intensity === "soft" ? "0.14" : intensity === "strong" ? "0.26" : "0.2";
+---
+
+<div class={`dither-wrap ${className}`.trim()} aria-hidden="true">
+  <div class="dither-base"></div>
+  <div class="dither-grid" style={`--grid-opacity: ${gridOpacity};`}></div>
+  <div class="dither-noise" style={`--noise-opacity: ${noiseOpacity};`}></div>
+  <div class="dither-scanlines"></div>
+  <div class="dither-scan"></div>
+  <div class="dither-glyph-rain" style={`--glyph-opacity: ${glyphOpacity};`}>
+    <span class="glyph-col g1"></span>
+    <span class="glyph-col g2"></span>
+    <span class="glyph-col g3"></span>
+    <span class="glyph-col g4"></span>
+    <span class="glyph-col g5"></span>
+    <span class="glyph-col g6"></span>
+    <span class="glyph-col g7"></span>
+    <span class="glyph-col g8"></span>
+    <span class="glyph-col g9"></span>
+    <span class="glyph-col g10"></span>
+    <span class="glyph-col g11"></span>
+    <span class="glyph-col g12"></span>
+  </div>
+</div>
+
+<style>
+  .dither-wrap,
+  .dither-wrap > div {
+    position: absolute;
+    inset: 0;
+  }
+
+  .dither-wrap {
+    overflow: hidden;
+    contain: layout paint style;
+    --hero-main: var(--accent-hero, #34d399);
+    --hero-soft: var(--accent-hero-soft, #6ee7b7);
+  }
+
+  .dither-base {
+    background:
+      radial-gradient(circle at 24% 14%, color-mix(in srgb, var(--hero-soft) 7%, transparent) 0%, transparent 34%),
+      radial-gradient(circle at 78% 12%, color-mix(in srgb, var(--hero-main) 5.5%, transparent) 0%, transparent 30%),
+      radial-gradient(circle at 52% 75%, color-mix(in srgb, var(--hero-soft) 2.2%, transparent) 0%, transparent 40%),
+      linear-gradient(180deg, #040504 0%, #090a09 100%);
+  }
+
+  .dither-grid {
+    opacity: var(--grid-opacity);
+    background-image:
+      linear-gradient(to right, rgba(167, 243, 208, 0.48) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(167, 243, 208, 0.48) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0.55) 80%);
+  }
+
+  .dither-noise {
+    pointer-events: none;
+    --c: rgba(220, 252, 231, calc(var(--noise-opacity) * 0.9));
+    background-image:
+      linear-gradient(45deg, var(--c) 25%, transparent 25%, transparent 75%, var(--c) 75%),
+      linear-gradient(45deg, var(--c) 25%, transparent 25%, transparent 75%, var(--c) 75%);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+    opacity: 0.42;
+  }
+
+  .dither-scanlines {
+    pointer-events: none;
+    opacity: 0.4;
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(187, 247, 208, 0.04) 0px,
+      rgba(187, 247, 208, 0.04) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  }
+
+  .dither-scan {
+    pointer-events: none;
+    inset: -35% 0;
+    background-image:
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        color-mix(in srgb, var(--hero-main) 3%, transparent) 42%,
+        color-mix(in srgb, var(--hero-soft) 8%, transparent) 50%,
+        color-mix(in srgb, var(--hero-main) 3%, transparent) 58%,
+        transparent 100%
+      );
+    animation: dither-scan 9.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    will-change: transform;
+  }
+
+  .dither-glyph-rain {
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .glyph-col {
+    position: absolute;
+    display: block;
+    top: -30%;
+    width: 18px;
+    height: 158%;
+    opacity: calc(var(--glyph-opacity) + 0.1);
+    background-image:
+      repeating-linear-gradient(
+        180deg,
+        rgba(220, 252, 231, 0.08) 0px,
+        rgba(220, 252, 231, 0.08) 2px,
+        transparent 2px,
+        transparent 10px
+      ),
+      repeating-linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hero-main) 10%, transparent) 0px,
+        color-mix(in srgb, var(--hero-main) 10%, transparent) 1px,
+        transparent 1px,
+        transparent 6px
+      );
+    border-left: 1px solid color-mix(in srgb, var(--hero-soft) 12%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--hero-main) 12%, transparent);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--hero-main) 10%, transparent);
+    will-change: transform;
+  }
+
+  .glyph-col::before {
+    content: "0101#++0011##++0101#++0011##++";
+    position: absolute;
+    inset: 6px 2px;
+    color: rgba(220, 252, 231, 0.34);
+    font-family: "Geist Mono", monospace;
+    font-size: 9px;
+    line-height: 1;
+    letter-spacing: 1px;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    white-space: pre;
+    opacity: 0.75;
+  }
+
+  .g1 { left: 4.5%; width: 16px; height: 170%; animation: glyph-fall-a 15.4s linear infinite; animation-delay: -6.2s; }
+  .g2 { left: 11.8%; width: 21px; height: 152%; animation: glyph-fall-b 11.8s linear infinite; animation-delay: -1.4s; }
+  .g3 { left: 18.7%; width: 14px; height: 166%; animation: glyph-fall-a 13.9s linear infinite; animation-delay: -8.1s; }
+  .g4 { left: 27.4%; width: 24px; height: 149%; animation: glyph-fall-b 16.1s linear infinite; animation-delay: -3.6s; }
+  .g5 { left: 35.9%; width: 17px; height: 173%; animation: glyph-fall-a 12.7s linear infinite; animation-delay: -9.4s; }
+  .g6 { left: 44.6%; width: 20px; height: 156%; animation: glyph-fall-b 14.6s linear infinite; animation-delay: -4.9s; }
+  .g7 { left: 53.2%; width: 13px; height: 168%; animation: glyph-fall-a 17.2s linear infinite; animation-delay: -12.3s; }
+  .g8 { left: 61.4%; width: 23px; height: 151%; animation: glyph-fall-b 13.2s linear infinite; animation-delay: -7.8s; }
+  .g9 { left: 69.1%; width: 15px; height: 165%; animation: glyph-fall-a 10.9s linear infinite; animation-delay: -2.7s; }
+  .g10 { left: 77.3%; width: 22px; height: 159%; animation: glyph-fall-b 15.7s linear infinite; animation-delay: -10.2s; }
+  .g11 { left: 85.7%; width: 14px; height: 172%; animation: glyph-fall-a 12.1s linear infinite; animation-delay: -5.3s; }
+  .g12 { left: 93.1%; width: 19px; height: 154%; animation: glyph-fall-b 16.8s linear infinite; animation-delay: -11.6s; }
+
+  @keyframes glyph-fall-a {
+    from {
+      transform: translate3d(0, -6%, 0);
+    }
+    to {
+      transform: translate3d(0, 8%, 0);
+    }
+  }
+
+  @keyframes dither-scan {
+    from {
+      transform: translate3d(0, -24%, 0);
+    }
+    to {
+      transform: translate3d(0, 24%, 0);
+    }
+  }
+
+  @keyframes glyph-fall-b {
+    from {
+      transform: translate3d(0, 8%, 0);
+    }
+    to {
+      transform: translate3d(0, -6%, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dither-scan,
+    .glyph-col {
+      animation: none;
+    }
+  }
+</style>

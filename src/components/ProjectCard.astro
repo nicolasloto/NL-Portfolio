@@ -21,10 +21,10 @@ const isList = variant === "list";
 ---
 
 <article
-  class={`group hover-accent-card surface-card js-foil border border-white/20 ${
+  class={`group hover-accent-card surface-card js-foil border border-white/15 ${
     isList
-      ? "p-4 sm:p-6 rounded-2xl transition-all duration-300"
-      : "rounded-2xl overflow-hidden transition-all duration-300"
+      ? "p-4 sm:p-6 rounded-2xl transition-all duration-300 hover:-translate-y-0.5"
+      : "rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
   }`}
   aria-labelledby={`project-${project.id}-title`}
 >
@@ -61,26 +61,19 @@ const isList = variant === "list";
         <div class="flex-1">
           <h4
             id={`project-${project.id}-title`}
-            class="text-xl font-medium text-white mb-2 transition-colors duration-300 group-hover:text-cyan-200"
+            class="text-xl font-semibold text-white/95 mb-2 transition-colors duration-300 group-hover:text-white"
           >
             {project.title}
           </h4>
-          <p class="text-white/65 mb-3 transition-colors duration-300 group-hover:text-white/90">
+          <p class="text-white/60 leading-relaxed mb-3 transition-colors duration-300 group-hover:text-white/82">
             {project.description}
           </p>
           <div class="flex flex-wrap gap-2 mb-3">
             {
-              project.tags.map((tech, techIndex) => {
-                const hoverColor =
-                  techIndex % 3 === 0
-                    ? "group-hover:text-cyan-200 group-hover:border-cyan-300/70"
-                    : techIndex % 3 === 1
-                      ? "group-hover:text-fuchsia-200 group-hover:border-fuchsia-300/70"
-                      : "group-hover:text-amber-200 group-hover:border-amber-300/70";
-
+              project.tags.map((tech) => {
                 return (
                   <span
-                    class={`px-3 py-1 bg-white/10 text-white/85 border border-white/30 rounded-full text-sm transition-colors duration-300 ${hoverColor}`}
+                    class="px-3 py-1 border rounded-full text-sm transition-colors duration-300 bg-zinc-700/45 text-zinc-100 border-zinc-400/40 group-hover:bg-emerald-500/10 group-hover:text-emerald-100 group-hover:border-emerald-300/55"
                     aria-label={`Technology: ${tech}`}
                   >
                     {tech}
@@ -96,7 +89,7 @@ const isList = variant === "list";
                   project.demoUrl && (
                     <a
                       href={project.demoUrl}
-                      class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-cyan-300/70 transition-colors"
+                      class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-emerald-300/60 transition-colors"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`View live demo of ${project.title}`}
@@ -109,7 +102,7 @@ const isList = variant === "list";
                   project.githubUrl && (
                     <a
                       href={project.githubUrl}
-                      class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-fuchsia-300/70 transition-colors"
+                      class="px-3 py-1 text-sm rounded-lg border border-white/30 text-white/85 hover:text-white hover:border-emerald-300/60 transition-colors"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`View source code of ${project.title}`}
@@ -147,7 +140,7 @@ const isList = variant === "list";
           {
             project.featured && (
               <span
-                class="absolute top-4 right-4 bg-cyan-700 text-white px-3 py-1 rounded-full text-sm"
+                class="absolute top-4 right-4 bg-emerald-900/80 text-white px-3 py-1 rounded-full text-sm border border-emerald-300/35"
                 aria-label="Featured project"
               >
                 Featured
@@ -159,26 +152,19 @@ const isList = variant === "list";
         <div class="p-6">
           <h3
             id={`project-${project.id}-title`}
-            class="text-xl font-semibold text-white mb-2"
+            class="text-xl font-semibold text-white/95 mb-2"
           >
             {project.title}
           </h3>
-          <p class="text-white/70 mb-4">{project.description}</p>
+          <p class="text-white/62 leading-relaxed mb-4">{project.description}</p>
 
           <div class="flex flex-wrap gap-2 mb-4">
             {
-              project.tags.map((tag, index) => {
-                const palette = [
-                  "bg-cyan-500/15 text-cyan-100 border-cyan-300/50",
-                  "bg-fuchsia-500/15 text-fuchsia-100 border-fuchsia-300/50",
-                  "bg-amber-500/15 text-amber-100 border-amber-300/50",
-                ];
+              project.tags.map((tag) => {
                 return (
                   <span
                     data-tag={tag.toLowerCase()}
-                    class={`px-3 py-1 border rounded-full text-sm ${
-                      palette[index % palette.length]
-                    }`}
+                    class="px-3 py-1 border rounded-full text-sm transition-colors duration-300 bg-zinc-700/45 text-zinc-100 border-zinc-400/40 group-hover:bg-emerald-500/10 group-hover:text-emerald-100 group-hover:border-emerald-300/55"
                     aria-label={`Technology: ${tag}`}
                   >
                     {tag}
@@ -195,7 +181,7 @@ const isList = variant === "list";
                   href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex-1 text-center px-4 py-2 bg-gradient-to-r from-cyan-800 via-indigo-800 to-fuchsia-800 text-white rounded-xl border border-white/20 focus-visible:ring-2 focus-visible:ring-cyan-200/40"
+                  class="flex-1 text-center px-4 py-2 bg-gradient-to-r from-zinc-800 via-emerald-900 to-zinc-800 text-white rounded-xl border border-white/20 focus-visible:ring-2 focus-visible:ring-emerald-200/35"
                   aria-label={`View live demo of ${project.title}`}
                 >
                   Live Demo
@@ -208,7 +194,7 @@ const isList = variant === "list";
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex-1 text-center px-4 py-2 border border-white/35 text-white/90 rounded-xl hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-cyan-200/40 transition-colors"
+                  class="flex-1 text-center px-4 py-2 border border-white/35 text-white/90 rounded-xl hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-emerald-200/35 transition-colors"
                   aria-label={`View source code of ${project.title}`}
                 >
                   View Code
